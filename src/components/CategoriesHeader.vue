@@ -17,23 +17,27 @@
  <script>
 export default {
   name: 'CategoriesPage',
+
   data() {
     return {
       categories: [],
     };
   },
+
   mounted() {
     this.fetchCategories();
   },
+
   methods: {
     async fetchCategories() {
       try {
-        const response = await fetch('http://localhost/lingonowAPI/index.php/Categories');
-        if (!response.ok) {
+        const response = await fetch('http://localhost/lingonowAPI/index.php/categories');
+        if (!response.ok || response == null) {
           throw new Error('Failed to fetch categories');
+        } else {
+          const data = await response.json();
+          this.categories = data && data.map(cat => ({ categoryId: cat.categoryId, title: cat.title }));
         }
-        const data = await response.json();
-        this.categories = data.map(cat => ({ categoryId: cat.categoryId, title: cat.title }));
       } catch (error) {
         console.error('Error fetching categories:', error);
       }

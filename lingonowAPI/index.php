@@ -52,7 +52,7 @@ $app->post('/users', function($request, $response, $args) use ($db){
     
 });
 
-$app->get('/Categories', function($request, $response, $args) use ($db){
+$app->get('/categories', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
 
@@ -87,7 +87,7 @@ $app->get('/Categories', function($request, $response, $args) use ($db){
     }
 });
 
-$app->get('/Slangs', function($request, $response, $args) use ($db){
+$app->get('/slangs', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
 
@@ -117,7 +117,7 @@ $app->get('/category', function($request, $response, $args) use ($db){
     }
 });
 
-$app->post('/Create', function($request, $response, $args) use ($db){
+$app->post('/create', function($request, $response, $args) use ($db){
     try {
         $conn = $db->connect();
         $data = $request->getParsedBody();

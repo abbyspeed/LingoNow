@@ -52,7 +52,7 @@ export default {
   methods: {
     async fetchSlangData(categoryId) {
       try {
-        const response = await fetch('http://localhost/lingonowAPI/index.php/Categories');
+        const response = await fetch('http://localhost/lingonowAPI/index.php/categories');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }

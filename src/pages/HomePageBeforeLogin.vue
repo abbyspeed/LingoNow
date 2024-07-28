@@ -11,7 +11,7 @@
             <ul>
               <li><router-link to="/">Home</router-link></li>
               <li><router-link to="/About">About Us</router-link></li>
-              <li><a href="#">Categories</a></li>
+              <li><router-link to="/Categories">Categories</router-link></li>
               <li><router-link to="/Manage">Manage</router-link></li>
             </ul>
           </div>
@@ -73,12 +73,7 @@
   </div>
 </template>
 
-
-
-
 <style scoped>
-
-
 .cont {
   background-color: #fff;
   display: flex;
