@@ -1,34 +1,49 @@
 <template>
-    <div class="categoriesHeader">
-      <div class="description">
-        <h2>Categories</h2>
-        <div class="buttons-container">
-          <button v-for="category in categories" :key="category" @click="selectCategory(category)">
-            {{ category }}
-          </button>
-        </div>
+<div class="categoriesHeader">
+    <div class="description">
+      <h2>Categories</h2>
+      <div class="buttons-container">
+        <button v-for="category in categories" :key="category.categoryId" @click="selectCategory(category)">
+          {{ category.title }}
+        </button>
       </div>
+    </div>
       <div class="penguin">
         <img src="@/assets/logo.png" alt="Penguin Flat Image" height="300px" width="300px">
       </div>
     </div>
   </template>
   
-  <script>
-  export default {
-    name: 'CategoriesPage',
-    data() {
-      return {
-        categories: ['Trending', 'Social Media', 'Regional', 'Gaming', 'Pop Culture', 'Abbreviations', 'Historical', 'Generational'],
-      };
+ <script>
+export default {
+  name: 'CategoriesPage',
+  data() {
+    return {
+      categories: [],
+    };
+  },
+  mounted() {
+    this.fetchCategories();
+  },
+  methods: {
+    async fetchCategories() {
+      try {
+        const response = await fetch('http://localhost/lingonowAPI/index.php/Categories');
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
+        const data = await response.json();
+        this.categories = data.map(cat => ({ categoryId: cat.categoryId, title: cat.title }));
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
     },
-    methods: {
-      selectCategory(category) {
-        this.$emit('category-selected', category);
-      },
+    selectCategory(category) {
+      this.$emit('category-selected', category);
     },
-  };
-  </script>
+  },
+};
+</script>
   
   <style scoped>
   .categoriesHeader {

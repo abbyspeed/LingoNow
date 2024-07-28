@@ -1,6 +1,5 @@
 <template>
 <navBar></navBar>
-    <div class="container">
         <div class="search-section">
             <div class="search-content">
                 <h2 class="search-title">Search the SLANG</h2>
@@ -8,9 +7,9 @@
                     <input type="text" placeholder="Search" v-model="searchQuery" @input="filterSlang" />
                 </div>
             </div>
-            <div class="logoSection">
-                <img :src="require('/src/assets/search.png')" alt="LingoNow" class="logo" />
-            </div>
+            <!-- <div class="logoSection">
+                <img :src="require('/src/assets/search.png')" alt="LingoNow" class="logo" height="100px" width="100px" />
+            </div> -->
         </div>
         
         <div class="slanglist-section">
@@ -22,7 +21,6 @@
                 </li>
             </ul>
         </div>
-    </div>
 </template>
 
 <script>
@@ -77,36 +75,16 @@ export default {
 </script>
 
 <style scoped>
-.container {
-    display: flex;
-    flex-direction: column;
-    gap: 50px; 
-    font-family: 'Inter', sans-serif; 
-}
+
 
 .search-section {
     display: flex;
     align-items: flex-start;
     background-color: #FF9B3F;
     padding: 10px 20px; 
-}
-
-.logoSection {
-    width: 230px; 
-    height: 230px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-left: 0px; 
-    margin-right: auto; 
+    padding-bottom: 30px;
 }
     
-
-.logo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-}
-
 .search-content {
     display: flex;
     flex-direction: column;
@@ -114,7 +92,6 @@ export default {
     margin-right: auto;
     margin-top: 10px; 
 }
-
 
 .search-title {
     font-size: 40px; 
