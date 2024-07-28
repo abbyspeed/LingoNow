@@ -7,7 +7,7 @@ class db{
     private $dbname = 'lingonowdb';
 
     function connect(){
-        $mysql_connect_str = 'mysql:host=$this->$host; dbname=$this->dbname';
+        $mysql_connect_str = 'mysql:host=$this->host; dbname=$this->dbname';
         $dbConnect = new PDO($mysql_connect_str, $this->user, $this->password);
         $dbConnect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
