@@ -1,47 +1,34 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div class="navbar">
-    <router-link to="/">
-      <div class="logoSection">
-        <img :src="require('/src/assets/logo.png')" alt="LingoNow" class="logo" />
-        <h2>LingoNow</h2>
-      </div>
-    </router-link>
-    <div class="menu">
-      <!-- <ul :class="{ 'nav-links': true, 'nav-active': isActive }"> -->
-      <ul>
-        <li :class="{ 'active-link': activeRoute === 'home'}">
-          <router-link to="/" active-class="active-link" exact>Home</router-link>
-        </li>
-        <li :class="{ 'active-link': activeRoute === 'about'}">
-          <router-link to="/About" active-class="active-link" exact>About Us</router-link>
-        </li>
-        <li :class="{ 'active-link': activeRoute === 'categories'}">
-          <router-link to="/Categories" active-class="active-link" exact>Categories</router-link>
-        </li>
-      </ul>
+    <div class="navbar">
+        <router-link to="/">
+        <div class="logoSection">
+            <img :src="require('/src/assets/logo.png')" alt="LingoNow" class="logo" />
+            <h2>LingoNow</h2>
+        </div>
+        </router-link>
+        <div class="menu">
+        <ul :class="{ 'nav-links': true, 'nav-active': isActive }">
+            <li><router-link to="/" active-class="active-link" exact>Home</router-link></li>
+            <li><router-link to="/About" active-class="active-link" exact>About Us</router-link></li>
+            <li><router-link to="/Categories" active-class="active-link" exact>Categories</router-link></li>
+            <li><router-link to="/Manage" active-class="active-link" exact>Manage</router-link></li>
+        </ul>
+        </div>
+        <div class="userProfile">
+        <img :src="require('/src/assets/user.png')" alt="user" class="user" />
+        <p>User</p>
+        </div>
     </div>
-    <div class="loginBtn">
-      
-    </div>
-  </div>
 </template>
-
+  
 <script>
 export default {
-  props: {
-    activeRoute: {
-      type: String,
-      required: true,
-    },
+  data(){
+    return{
+      isActive: false
+    }
   },
-
-  data() {
-    return {
-      isActive: false,
-    };
-  },
-};
+}
 </script>
 
 <style scoped>
@@ -111,12 +98,12 @@ export default {
   color: black;
 }
 
-.active-link{
+.active-link {
   color: #f4b400; /* Active link color */
   font-weight: bold; /* Optional: make it bold */
 }
 
-.loginBtn {
+.userProfile {
   display: flex;
   align-items: center;
   flex: 1;
@@ -131,7 +118,7 @@ export default {
   margin-left: 10px;
 }
 
-.loginBtn p {
+.userProfile p {
   margin-left: 10px;
 }
 

@@ -1,24 +1,7 @@
 <template>
   <div class="cont">
     <header class="header">
-      <div class="navbar">
-        <div class="logoSection">
-          <img :src="require('/src/assets/logo.png')" alt="LingoNow" class="logo" />
-          <h2>LingoNow</h2>
-          </div>
-
-          <div class="menu">
-            <ul>
-              <li><router-link to="/">Home</router-link></li>
-              <li><router-link to="/About">About Us</router-link></li>
-              <li><router-link to="/Categories">Categories</router-link></li>
-              <li><router-link to="/Manage">Manage</router-link></li>
-            </ul>
-          </div>
-          <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/b366fb62b1a37ddf4c7ba876eec7a8aec9e26cfc28009f9b1065ab2a52a3b6fa?apiKey=d314e47cd2b145d4ba1bdf6144e8401a" alt="Menu Icon" class="menu-icon" />
-          <router-link :to="{ name: 'Login' }" class="menu-item">Login</router-link>
-        
-      </div>
+      <navBar :activeRoute="home"></navBar>
       <div class="search-section">
         <h2 class="search-title">Search the SLANG</h2>
         <section class="search-container">
@@ -72,6 +55,35 @@
     </main>
   </div>
 </template>
+
+<!-- <script>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+export default {
+  setup() {
+    const route = useRoute();
+    const currentRoute = computed(() => {
+      switch (route.path) {
+        case '/':
+          return 'home';
+        case '/About':
+          return 'about';
+        case '/Categories':
+          return 'categories';
+        case '/Manage':
+          return 'manage';
+        default:
+          return '';
+      }
+    });
+
+    return {
+      currentRoute,
+    };
+  },
+};
+</script> -->
 
 <style scoped>
 .cont {
