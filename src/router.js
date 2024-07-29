@@ -19,14 +19,24 @@ const routes = [
   { path: '/Categories', name:"Categories", component: CategoriesPage },
 
   // Admin routes
-  { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage, meta: { requiresAuth: true } },
-  { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage, meta: { requiresAuth: true } },
-  { path: '/Admin/Manage', name: "AdminManage", component: AdminHomePage, meta: { requiresAuth: true } },
-  { path: '/Admin/Create', name:"AdminCreate", component: AdminCreatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage', name: "AdminManage", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Create', name:"AdminCreate", component: AdminCreatePage, meta: { requiresAuth: true } },
 
-  { path: '/Admin/Manage/:id', name: "ManageSlang", component: AdminHomePage, meta: { requiresAuth: true } },
-  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminHomePage, meta: { requiresAuth: true } },
-  { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/:id', name: "ManageSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+
+  // Testing
+  { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage},
+  { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage},
+  { path: '/Admin/Manage', name: "AdminManage", component: AdminHomePage},
+  { path: '/Admin/Create', name:"AdminCreate", component: AdminCreatePage},
+
+  { path: '/Admin/Manage/:id', name: "ManageSlang", component: AdminHomePage},
+  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminHomePage},
+  { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage},
 ]
 
 const router = createRouter({
