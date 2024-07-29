@@ -8,8 +8,7 @@
       </div>
     </router-link>
     <div class="menu">
-      <!-- <ul :class="{ 'nav-links': true, 'nav-active': isActive }"> -->
-      <ul>
+      <ul :class="{ 'nav-links': true, 'nav-active': isActive }">
         <li :class="{ 'active-link': activeRoute === 'home'}">
           <router-link to="/" active-class="active-link" exact>Home</router-link>
         </li>
@@ -111,9 +110,9 @@ export default {
   color: black;
 }
 
-.active-link{
-  color: #f4b400; /* Active link color */
-  font-weight: bold; /* Optional: make it bold */
+.menu ul li .active-link {
+  color: black; 
+  font-weight: bold;
 }
 
 .loginBtn {

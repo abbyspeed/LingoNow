@@ -1,7 +1,7 @@
 <template>
   <div class="cont">
     <header class="header">
-      <navBar :activeRoute="home"></navBar>
+      <navBar :activeRoute="currentRoute"></navBar>
       <div class="search-section">
         <h2 class="search-title">Search the SLANG</h2>
         <section class="search-container">
@@ -56,9 +56,9 @@
   </div>
 </template>
 
-<!-- <script>
+<script>
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 
 export default {
   setup() {
@@ -83,7 +83,7 @@ export default {
     };
   },
 };
-</script> -->
+</script>
 
 <style scoped>
 .cont {

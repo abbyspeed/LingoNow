@@ -8,10 +8,18 @@
         </router-link>
         <div class="menu">
         <ul :class="{ 'nav-links': true, 'nav-active': isActive }">
-            <li><router-link to="/" active-class="active-link" exact>Home</router-link></li>
-            <li><router-link to="/About" active-class="active-link" exact>About Us</router-link></li>
-            <li><router-link to="/Categories" active-class="active-link" exact>Categories</router-link></li>
-            <li><router-link to="/Manage" active-class="active-link" exact>Manage</router-link></li>
+          <li :class="{ 'active-link': activeRoute === 'adminHome'}">
+            <router-link to="/Admin/Home" active-class="active-link" exact>Home</router-link>
+          </li>
+          <li :class="{ 'active-link': activeRoute === 'adminAbout'}">
+            <router-link to="/Admin/About" active-class="active-link" exact>About Us</router-link>
+          </li>
+          <li :class="{ 'active-link': activeRoute === 'categories'}">
+            <router-link to="/Admin/Categories" active-class="active-link" exact>Categories</router-link>
+          </li>
+          <li :class="{ 'active-link': activeRoute === 'adminManage'}">
+            <router-link to="/Admin/Manage" active-class="active-link" exact>Manage</router-link>
+          </li>
         </ul>
         </div>
         <div class="userProfile">
@@ -23,12 +31,19 @@
   
 <script>
 export default {
-  data(){
-    return{
-      isActive: false
-    }
+  props: {
+    activeRoute: {
+      type: String,
+      required: true,
+    },
   },
-}
+
+  data() {
+    return {
+      isActive: false,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -98,8 +113,8 @@ export default {
   color: black;
 }
 
-.active-link {
-  color: #f4b400; /* Active link color */
+.menu ul li .active-link {
+  color: black; /* Active link color */
   font-weight: bold; /* Optional: make it bold */
 }
 
