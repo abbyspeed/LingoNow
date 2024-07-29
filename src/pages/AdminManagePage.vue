@@ -1,5 +1,5 @@
 <template>
-    <navBar></navBar>
+    <adminNavBar></adminNavBar>
     <h2>Manage Slangs</h2>
     <slangTable></slangTable>
 </template>

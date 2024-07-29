@@ -20,16 +20,23 @@ export default new Vuex.Store({
 
     actions: {
         async login({ commit }, credentials){
-            const response = await axios.post('/login', credentials);
-            const user = response.data.user;
-            const token = response.data.token;
+            try{
+                const response = await axios.post('http://localhost:3000/login', credentials);
+                const user = response.data.user;
+                const token = response.data.token;
 
-            commit('setUser', user);
-            localStorage.setItem('token', token);
+                commit('setUser', user);
+                localStorage.setItem('token', token);
+            
+            } catch (error){
+                console.error('Login error: ', error);
+                throw error;
+            }  
         },
 
         logout({ commit }){
             commit('clearUser');
+            localStorage.removeItem('token');
         }
     }
 });

@@ -1,5 +1,5 @@
 <template>
-    <navBar></navBar>
+    <adminNavBar></adminNavBar>
     <div class="background">
         <aboutLingo></aboutLingo>
         <visionMission></visionMission>

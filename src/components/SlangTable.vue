@@ -46,7 +46,7 @@ export default {
 
         const fetchSlangs = async () => {
             try {
-                const response = await axios.get('http://localhost/lingonowAPI/index.php/Slangs'); 
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/slangs'); 
                 if (Array.isArray(response.data.slangs)) {
                     slang.value = response.data.slangs; 
                 } else {

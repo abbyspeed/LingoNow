@@ -1,5 +1,5 @@
 <template>
-    <navBar></navBar>
+    <adminNavBar></adminNavBar>
 
     <div class="form-container">
         <form @submit.prevent="submitForm">

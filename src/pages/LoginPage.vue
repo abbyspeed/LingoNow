@@ -6,7 +6,7 @@
         </div>
         <div class="loginForm">
             <h3>Log into LingoNow</h3>
-            <form @submit.prevent="validateUser()">
+            <form @submit.prevent="login">
                 <customForm v-for="form in form" 
                     :title="form.title" 
                     :placeholderText="form.placeholderText"
@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
     data() {
         return {
@@ -52,7 +54,25 @@ export default {
             }
 
             // this.$router.push('/Create');
-        }
+        },
+
+        ...mapActions(["login"]),
+
+        async login() {
+            try {
+                const credentials = {
+                    username: this.form[0].inputData,
+                    password: this.form[1].inputData,
+                };
+
+                await this.login(credentials);
+
+                this.$router.push("/Admin/Home");
+            } catch (error) {
+                console.error("Login failed:", error);
+                // Handle error (e.g., show a notification or message)
+            }
+        },
     }
 }
 </script>
@@ -85,12 +105,12 @@ export default {
     flex: 1;
     height: 100%;
     text-align: left;
-    padding: 10px 20px;
+    padding: 15px 20px;
 }
 
 h3 {
     text-align: center;
-    margin: 30px 0;
+    margin: 20px;
 }
 
 a {
