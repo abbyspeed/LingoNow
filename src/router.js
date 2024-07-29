@@ -7,6 +7,7 @@ import ManagePage from './pages/ManagePage.vue'
 import AboutUsPage from './pages/AboutUsPage.vue'
 import CreatePage from './pages/CreatePage.vue'
 import CategoriesPage from './pages/CategoriesPage.vue'
+import Userfront from '@userfront/toolkit'
 
 const routes = [
   { path: '/', name: "HomePageBL", component: HomePageBeforeLogin },
@@ -22,6 +23,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+
+// Route guards
+router.beforeEach((to, from, next) => {
+  const isLoggedIn = !!Userfront.tokens.accessToken;
+
+  if(to.name === "Manage" || to.name === "Create" && !isLoggedIn){
+    return next({path: "/Login"});
+  }
+
+  next();
 })
 
 export default router;
