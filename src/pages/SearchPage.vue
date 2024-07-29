@@ -1,26 +1,26 @@
 <template>
-<navBar></navBar>
-        <div class="search-section">
-            <div class="search-content">
-                <h2 class="search-title">Search the SLANG</h2>
-                <div class="search-box">
-                    <input type="text" placeholder="Search" v-model="searchQuery" @input="filterSlang" />
-                </div>
+    <navBar></navBar>
+    <div class="search-section">
+        <div class="search-content">
+            <h2 class="search-title">Search the SLANG</h2>
+            <div class="search-box">
+                <input type="text" placeholder="Search" v-model="searchQuery" @input="filterSlang" />
             </div>
-            <!-- <div class="logoSection">
-                <img :src="require('/src/assets/search.png')" alt="LingoNow" class="logo" height="100px" width="100px" />
-            </div> -->
         </div>
-        
-        <div class="slanglist-section">
-            <ul class="slang-list">
-                <li v-for="slang in filteredSlang" :key="slang.word" class="slang-item">
-                    <h3 class="slang-word">{{ slang.word }}</h3>
-                    <strong>Meaning:</strong> {{ slang.meaning }}<br>
-                    <strong>Example:</strong> {{ slang.example }}
-                </li>
-            </ul>
-        </div>
+        <!-- <div class="logoSection">
+            <img :src="require('/src/assets/search.png')" alt="LingoNow" class="logo" height="100px" width="100px" />
+        </div> -->
+    </div>
+    
+    <div class="slanglist-section">
+        <ul class="slang-list">
+            <li v-for="slang in filteredSlang" :key="slang.word" class="slang-item">
+                <h3 class="slang-word">{{ slang.word }}</h3>
+                <strong>Meaning:</strong> {{ slang.meaning }}<br>
+                <strong>Example:</strong> {{ slang.example }}
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>

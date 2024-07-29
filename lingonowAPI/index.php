@@ -6,11 +6,63 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 require 'vendor/autoload.php';
 require_once './dbconnect.php';
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 $app = new \Slim\App;
 $db = new db();
 
+// To be changed
+$jwtSecret = 'your_jwt_secret';
+
+// Sample
 $app->get('/', function(){
     echo("Hello from root folder");
+});
+
+// Auth
+$app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) {
+    $conn = $db->connect();
+
+    // Retrieve JSON input
+    $input = $request->getParsedBody();
+
+    $username = $input['username'] ?? '';
+    $password = $input['password'] ?? '';
+
+    // Query the database for the user
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username");
+    $stmt->bindValue(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    echo $password;
+    echo $user['pwd'];
+
+    if ($user && password_verify($password, $user['pwd']) == true) {
+    // if($user != null){
+        // Password is correct, generate JWT token
+        $payload = [
+            'username' => $username,
+            'exp' => time() + 3600 // Token expiration time (1 hour)
+        ];
+
+        $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
+
+        // Prepare response data
+        $data = [
+            'token' => $jwt,
+            'user' => ['username' => $username]
+        ];
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
+
+    } else {
+        // Invalid username or password
+        $data = ['message' => 'Invalid username or password'];
+        $response->getBody()->write(json_encode($data));
+        return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
+    }
 });
 
 $app->get('/users', function($request, $response, $args){
@@ -52,6 +104,26 @@ $app->post('/users', function($request, $response, $args) use ($db){
     
 });
 
+// UPDATE PASSWORD
+$app->post('/resetPwd', function($request, $response, $args) use ($db){
+    $conn = $db->connect();
+    $input = $request->getParsedBody();
+
+    $email = $input['email'] ?? '';
+    $plainPassword = $input['password'] ?? '';
+
+    // Hash the password
+    $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+
+    // Update the database with the hashed password
+    $stmt = $conn->prepare("UPDATE user SET pwd = :pwd WHERE email = :email");
+    $stmt->execute(['pwd' => $hashedPassword, 'email' => $email]);
+
+    echo 'Password updated successfully.';
+});
+
+// Categories
+// READ
 $app->get('/categories', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
@@ -87,6 +159,7 @@ $app->get('/categories', function($request, $response, $args) use ($db){
     }
 });
 
+// READ
 $app->get('/slangs', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
@@ -102,6 +175,7 @@ $app->get('/slangs', function($request, $response, $args) use ($db){
     }
 });
 
+// READ
 $app->get('/category', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
@@ -117,6 +191,7 @@ $app->get('/category', function($request, $response, $args) use ($db){
     }
 });
 
+// CREATE
 $app->post('/create', function($request, $response, $args) use ($db){
     try {
         $conn = $db->connect();
@@ -136,5 +211,10 @@ $app->post('/create', function($request, $response, $args) use ($db){
         return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
     }
 });
+
+// UPDATE
+
+
+// DELETE
 
 $app->run();

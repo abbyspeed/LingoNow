@@ -1,7 +1,7 @@
 <template>
-    <adminNavBar :activeRoute="currentRoute"></adminNavBar>
-    <h2>Manage Slangs</h2>
-    <slangTable></slangTable>
+  <adminNavBar :activeRoute="currentRoute"></adminNavBar>
+  <h2>Manage Slangs</h2>
+  <slangTable></slangTable>
 </template>
 
 <script>

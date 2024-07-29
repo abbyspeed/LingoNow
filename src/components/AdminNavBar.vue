@@ -1,32 +1,32 @@
 <template>
-    <div class="navbar">
-        <router-link to="/">
-        <div class="logoSection">
-            <img :src="require('/src/assets/logo.png')" alt="LingoNow" class="logo" />
-            <h2>LingoNow</h2>
-        </div>
-        </router-link>
-        <div class="menu">
-        <ul :class="{ 'nav-links': true, 'nav-active': isActive }">
-          <li :class="{ 'active-link': activeRoute === 'adminHome'}">
-            <router-link to="/Admin/Home" active-class="active-link" exact>Home</router-link>
-          </li>
-          <li :class="{ 'active-link': activeRoute === 'adminAbout'}">
-            <router-link to="/Admin/About" active-class="active-link" exact>About Us</router-link>
-          </li>
-          <li :class="{ 'active-link': activeRoute === 'categories'}">
-            <router-link to="/Admin/Categories" active-class="active-link" exact>Categories</router-link>
-          </li>
-          <li :class="{ 'active-link': activeRoute === 'adminManage'}">
-            <router-link to="/Admin/Manage" active-class="active-link" exact>Manage</router-link>
-          </li>
-        </ul>
-        </div>
-        <div class="userProfile">
-        <img :src="require('/src/assets/user.png')" alt="user" class="user" />
-        <p>User</p>
-        </div>
+  <div class="navbar">
+    <router-link to="/Admin/Home">
+      <div class="logoSection">
+        <img :src="require('/src/assets/logo.png')" alt="LingoNow" class="logo" />
+        <h2>LingoNow</h2>
+      </div>
+    </router-link>
+    <div class="menu">
+      <ul :class="{ 'nav-links': true, 'nav-active': isActive }">
+        <li :class="{ 'active-link': activeRoute === 'adminHome'}">
+          <router-link to="/Admin/Home" active-class="active-link" exact>Home</router-link>
+        </li>
+        <li :class="{ 'active-link': activeRoute === 'adminAbout'}">
+          <router-link to="/Admin/About" active-class="active-link" exact>About Us</router-link>
+        </li>
+        <li :class="{ 'active-link': activeRoute === 'categories'}">
+          <router-link to="/Admin/Categories" active-class="active-link" exact>Categories</router-link>
+        </li>
+        <li :class="{ 'active-link': activeRoute === 'adminManage'}">
+          <router-link to="/Admin/Manage" active-class="active-link" exact>Manage</router-link>
+        </li>
+      </ul>
     </div>
+    <div class="userProfile">
+      <img :src="require('/src/assets/user.png')" alt="user" class="user" />
+      <p>User</p>
+    </div>
+  </div>
 </template>
   
 <script>
@@ -58,6 +58,10 @@ export default {
   color: white;
   background-color: #FF9B3F;
   font-family: 'Inter', sans-serif;
+}
+
+.navbar a {
+  text-decoration: none;
 }
 
 .logoSection {
