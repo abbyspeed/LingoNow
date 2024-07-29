@@ -1,7 +1,5 @@
-import Vue from 'vue';
-import Vuex from 'vuex'
-
-Vue.use(Vuex);
+import Vuex from 'vuex';
+import axios from 'axios';
 
 export default new Vuex.Store({
     state: {
@@ -21,8 +19,13 @@ export default new Vuex.Store({
     },
 
     actions: {
-        login({ commit }, user){
+        async login({ commit }, credentials){
+            const response = await axios.post('/login', credentials);
+            const user = response.data.user;
+            const token = response.data.token;
+
             commit('setUser', user);
+            localStorage.setItem('token', token);
         },
 
         logout({ commit }){

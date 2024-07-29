@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router';
+import router from './router'
+import store from './store'
 
 import CustomForm from "./components/CustomForm.vue"
 import NavBar from "./components/NavBar.vue"
@@ -12,15 +13,17 @@ import VisionMission from "./components/VisionMission.vue"
 import CategoriesHeader from "./components/CategoriesHeader.vue"
 import CategoriesList from "./components/CategoriesList.vue"
 import SearchPage from "./pages/SearchPage.vue"
-import HomePageBeforeLogin from './pages/HomePageBeforeLogin.vue';
-import ManagePage from './pages/ManagePage.vue'
+import HomePageBeforeLogin from './pages/HomePage.vue';
+import ManagePage from './pages/AdminManagePage.vue'
 import AboutUsPage from './pages/AboutUsPage.vue';
-import CreatePage from './pages/CreatePage.vue';
+import CreatePage from './pages/AdminCreatePage.vue';
 import CategoriesPage from './pages/CategoriesPage.vue';
+import AdminNavBar from './components/AdminNavBar.vue'
 
 const app = createApp(App);
 app.component("customForm", CustomForm);
 app.component("navBar", NavBar);
+app.component("adminNavBar", AdminNavBar);
 app.component("aboutLingo", AboutLingo);
 app.component("ourDeveloper", OurDeveloper);
 app.component("ourTeam", OurTeam);
@@ -36,4 +39,5 @@ app.component("createPage", CreatePage);
 app.component("categoriesPage", CategoriesPage);
 
 app.use(router);
+app.use(store);
 app.mount("#app");

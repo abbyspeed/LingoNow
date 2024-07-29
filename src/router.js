@@ -1,23 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from './store'
+import HomePage from './pages/HomePage.vue'
 import LoginPage from './pages/LoginPage.vue'
-import SignupPage from './pages/SignupPage.vue'
+// import SignupPage from './pages/SignupPage.vue'
 import SearchPage from './pages/SearchPage.vue'
-import HomePageBeforeLogin from './pages/HomePageBeforeLogin.vue'
-import ManagePage from './pages/ManagePage.vue'
 import AboutUsPage from './pages/AboutUsPage.vue'
-import CreatePage from './pages/CreatePage.vue'
 import CategoriesPage from './pages/CategoriesPage.vue'
-import Userfront from '@userfront/toolkit'
+import AdminHomePage from './pages/AdminHomePage.vue'
+import AdminCreatePage from './pages/AdminCreatePage.vue'
 
 const routes = [
-  { path: '/', name: "HomePageBL", component: HomePageBeforeLogin },
+  { path: '/', name: "Home", component: HomePage },
   { path: '/Login', name: "Login", component: LoginPage },
-  { path: '/Signup', name: "Signup", component: SignupPage },
+  // { path: '/Signup', name: "Signup", component: SignupPage },
   { path: '/Search', name: "Search", component: SearchPage },
-  { path: '/Manage', name: "Manage", component: ManagePage},
-  { path: '/About', name: "About", component: AboutUsPage},
-  { path: '/Create', name:"Create", component: CreatePage},
-  { path: '/Categories', name:"Categories", component: CategoriesPage}
+  { path: '/About', name: "About", component: AboutUsPage },
+  { path: '/Categories', name:"Categories", component: CategoriesPage },
+
+  // Admin routes
+  { path: '/Admin', name: "AdminHome", component: AdminHomePage, meta: { requiresAuth: true } },
+  { path: '/Admin/Manage', name: "Manage", component: AdminHomePage, meta: { requiresAuth: true } },
+  { path: '/Admin/Manage/:id', name: "ManageSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  { path: '/Admin/Create', name:"Create", component: AdminCreatePage, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
@@ -27,13 +33,17 @@ const router = createRouter({
 
 // Route guards
 router.beforeEach((to, from, next) => {
-  const isLoggedIn = !!Userfront.tokens.accessToken;
+  if(to.matched.some(record => record.meta.requiresAuth)){
+    if(!store.state.user){
+      next('/Login');
 
-  if(to.name === "Manage" || to.name === "Create" && !isLoggedIn){
-    return next({path: "/Login"});
+    } else{
+      next();
+    }
+    
+  } else{
+    next();
   }
-
-  next();
 })
 
 export default router;
