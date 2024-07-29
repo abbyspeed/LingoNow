@@ -1,7 +1,5 @@
 <template>
     <div class="table-container">
-
-
         <table>
             <thead>
                 <tr>
@@ -12,11 +10,13 @@
             </thead>
             <tbody>
                 <tr v-for="(row, rowIndex) in displayedSlangs" :key="rowIndex">
-                    <td>{{ row.word }}</td>
-                    <td>{{ row.meaning }}</td>
-                    <td>{{ formatDate(row.lastUpdated) }}</td>
-                    <td>
-                        <button @click="manageSlang(row.slangId)">Manage</button>
+                    <td class="medium">{{ row.word }}</td>
+                    <td class="long">{{ row.meaning }}</td>
+                    <td class="medium">{{ formatDate(row.lastUpdated) }}</td>
+                    <td class="short">
+                        <i class="far fa-edit" @click="editSlang(row.slangId)"></i>
+                        <div style="width: 10px"></div>
+                        <i class="fas fa-trash" @click="showDeleteConfirmation(row.slangId)"></i>
                     </td>
                 </tr>
             </tbody>
@@ -27,22 +27,32 @@
             Page {{ currentPage }} of {{ pageCount }}
             <button @click="nextPage" :disabled="currentPage === pageCount">Next</button>
         </div>
-        <p> </p>
+
         <button class="newSlang">
             <router-link to="/Create">Create a new slang</router-link>
         </button>
+
+        <deleteDialog
+            :isVisible="isDialogVisible"
+            @confirm="confirmDelete"
+            @cancel="cancelDelete"/>
     </div>
 </template>
 
 <script>
 import { computed, ref, onMounted } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 export default {
     setup() {
         const slang = ref([]);
         const pageSize = 10;
         const currentPage = ref(1);
+        const isDialogVisible = ref(false);
+        const slangToDelete = ref(null);
+
+        const router = useRouter();
 
         const fetchSlangs = async () => {
             try {
@@ -81,9 +91,34 @@ export default {
             }
         };
 
-        const manageSlang = (slangId) => {
-            console.log(`Manage slang with ID: ${slangId}`);
-            // Implement your manage slang logic here
+        const editSlang = (slangId) => {
+            console.log(`Edit slang with ID: ${slangId}`);
+            router.push({ name: 'UpdateSlang', params: { id: slangId } });
+        };
+
+        const showDeleteConfirmation = (slangId) => {
+            slangToDelete.value = slangId;
+            isDialogVisible.value = true;
+        };
+
+        const confirmDelete = async () => {
+            if (slangToDelete.value) {
+                try {
+                    await axios.delete(`http://localhost/lingonowAPI/index.php/slangs/${slangToDelete.value}`);
+                    // Remove the deleted slang from the list
+                    slang.value = slang.value.filter(item => item.slangId !== slangToDelete.value);
+                } catch (error) {
+                    console.error('Error deleting slang:', error);
+                } finally {
+                    isDialogVisible.value = false;
+                    slangToDelete.value = null;
+                }
+            }
+        };
+
+        const cancelDelete = () => {
+            isDialogVisible.value = false;
+            slangToDelete.value = null;
         };
 
         const formatDate = (dateString) => {
@@ -100,7 +135,12 @@ export default {
             pageCount,
             nextPage,
             prevPage,
-            manageSlang,
+            editSlang,
+            showDeleteConfirmation,
+            slangToDelete,
+            isDialogVisible,
+            cancelDelete,
+            confirmDelete,
             formatDate
         };
     }
@@ -145,6 +185,36 @@ tbody tr:nth-child(odd) {
 
 tbody tr:nth-child(even) {
     background-color: #fef2e6;
+}
+
+table .short {
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+table .medium {
+    width: 120px;
+}
+
+table .long {
+    text-align: justify;
+}
+
+.fa-edit,
+.fa-trash {
+    color: black;
+}
+
+.fa-edit:hover {
+    color: #FF9B3F;
+    cursor: pointer;
+}
+
+.fa-trash:hover {
+    color: red;
+    cursor: pointer;
 }
 
 button {

@@ -65,12 +65,13 @@ export default {
       switch (route.path) {
         case '/':
           return 'home';
+
         case '/About':
           return 'about';
+
         case '/Categories':
           return 'categories';
-        case '/Manage':
-          return 'manage';
+
         default:
           return '';
       }

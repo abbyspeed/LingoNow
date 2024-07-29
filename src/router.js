@@ -9,6 +9,8 @@ import CategoriesPage from './pages/CategoriesPage.vue'
 import AdminHomePage from './pages/AdminHomePage.vue'
 import AdminCreatePage from './pages/AdminCreatePage.vue'
 import AdminAboutPage from './pages/AdminAboutPage.vue'
+import AdminUpdatePage from './pages/AdminUpdatePage.vue'
+import AdminStatsPage from './pages/AdminStatsPage.vue'
 
 const routes = [
   { path: '/', name: "Home", component: HomePage },
@@ -32,10 +34,10 @@ const routes = [
   { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage},
   { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage},
   { path: '/Admin/Manage', name: "AdminManage", component: AdminHomePage},
-  { path: '/Admin/Create', name:"AdminCreate", component: AdminCreatePage},
+  { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage},
 
-  { path: '/Admin/Manage/:id', name: "ManageSlang", component: AdminHomePage},
-  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminHomePage},
+  { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage},
+  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage},
   { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage},
 ]
 
