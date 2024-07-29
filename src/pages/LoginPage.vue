@@ -13,12 +13,12 @@
                     :isPassword="form.isPassword" 
                     :key="form.id"
                     v-model="form.inputData"></customForm>
+
+                <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
             
                 <button type="submit" class="mainBtn">Login</button>
             </form>
-            <router-link :to="{ name: 'Signup' }">
-                <center>Don't have an account? Sign up now!</center>
-            </router-link>
+            <center>To register, please reach out to us at lingo@gmail.com</center>
         </div>
     </div>
 </template>
@@ -42,7 +42,9 @@ export default {
                     isPassword: true,
                     inputData: ""
                 }
-            ]
+            ],
+            errorMessage: '',
+            hasLoggedError: false
         }
     },
     methods: {
@@ -59,18 +61,40 @@ export default {
         ...mapActions(["login"]),
 
         async login() {
+            if (this.hasLoggedError) {
+                return; // Prevent further action if error already logged
+            }
+
+            this.hasLoggedError = true;
+            this.errorMessage = '';
+
             try {
                 const credentials = {
                     username: this.form[0].inputData,
                     password: this.form[1].inputData,
                 };
 
-                await this.login(credentials);
+                console.log(credentials);
 
-                this.$router.push("/Admin/Home");
+                // await this.login(credentials);
+                await this.$store.dispatch('login', credentials);
+
+                if (this.$store.state.user) {
+                    this.$router.push("/Admin/Home");
+
+                } else {
+                    console.error("Login failed: User not set");
+                    this.errorMessage = "Login failed. Please check your credentials.";
+                    // this.hasLoggedError = true;
+                }
+
             } catch (error) {
                 console.error("Login failed:", error);
-                // Handle error (e.g., show a notification or message)
+                this.errorMessage = "Login failed. Please try again.";
+                // this.hasLoggedError = true;
+                // window.location.reload();
+            } finally {
+                this.hasLoggedError = false; // Reset flag after request completes
             }
         },
     }
@@ -117,5 +141,15 @@ a {
     color: black;
     font-size: 12px;
     text-align: center;
+}
+
+.errorMessage {
+    font-size: 12px;
+    color: red;
+}
+
+center {
+    font-size: 10px;
+    color: gray;
 }
 </style>

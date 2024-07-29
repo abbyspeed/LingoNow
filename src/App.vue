@@ -4,7 +4,11 @@
 
 <script>
 export default {
-  name: 'LingoNow'
+  name: 'LingoNow',
+  // const user = JSON.parse(localStorage.getItem('user'));
+  // if(user){
+  //     store.commit('setUser', user);
+  // }
 }
 </script>
 
