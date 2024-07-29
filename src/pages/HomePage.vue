@@ -18,37 +18,35 @@
         <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/47c5ca4f2082069e4c5389ff4a00f7678d0f6bb81bb554cab645de1bce1fc080?apiKey=d314e47cd2b145d4ba1bdf6144e8401a" alt="Decorative image" class="decorative-image">
       </aside> 
     </header>
+
     <main class="main-content">
       <div class="rectangle-container">
         <div class="rectangle-div">
-         <section class="recent-section">
-     <h2 class="section-title">Recently Added</h2>
-    <div class="item-button">Bussin’</div>
-    <div class="item-button">Vibe check</div>
-    <div class="item-button">Ditch</div>
-     </section>
+          <section class="recent-section">
+            <h2 class="section-title">Recently Added</h2>
+            <div class="item-button">Bussin’</div>
+            <div class="item-button">Vibe check</div>
+            <div class="item-button">Ditch</div>
+          </section>
         </div>
+
         <div class="rectangle-div">
           <section class="todays-slang">
             <h2 class="section-title">Today’s Slang</h2>
-            <article class="slang-article">
-              <h3 class="slang-term">Delulu</h3>
+              <div class="item-button">Delulu</div>
               <p class="slang-description">The term “delulu” is a slang abbreviation of the word “delusional”. Describe individuals who display odd or extreme behaviour, particularly superfans or dating partners.</p>
-            </article>
           </section>
         </div>
+
         <div class="rectangle-div">
           <section class="top-used-slang">
             <h2 class="section-title">Top Used Slang</h2>
-           
-            
-              <div class="list">1.IYKYK</div>
-              <div class="list">2.Slay</div>
-              <div class="list">3.Lit</div>
-              <div class="list">4.Goat</div>
-              <div class="list">5.Rizz</div>
-           
-          
+              <div style="height: 20px"></div>
+              <div class="list">1. IYKYK</div>
+              <div class="list">2. Slay</div>
+              <div class="list">3. Lit</div>
+              <div class="list">4. Goat</div>
+              <div class="list">5. Rizz</div>
           </section>
         </div>
       </div>
@@ -197,7 +195,7 @@ export default {
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-bottom: 10px;
+  margin: 20px 0;
 }
 
 .search-container {
@@ -273,37 +271,41 @@ export default {
 }
 
 .main-content {
-  display: flex;
   justify-content: space-between;
   margin-top: 75px;
-  margin-left: 330px;
 }
 
 .rectangle-container {
   display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 50px;
 }
 
 .rectangle-div {
-  width: 400px; /* Assuming the container's width for these elements is around 1850px */
-  margin-right: 100px; 
+  width: 350px; /* Assuming the container's width for these elements is around 1850px */
   position: relative;
   border-radius: 25px;
   background-color: rgba(117, 117, 117, 0);
   border: 3px solid #757575;
   box-sizing: border-box;
-  height: 387px;
+  height: 380px;
 }
 
-.recently-added,
-.todays-slang {
-  width: 100%;
-  max-width: 600px;
-}
-
+.recent-section,
+.todays-slang,
 .top-used-slang {
-  text-align: left;
-  margin-left: 75px;
+  padding: 20px;
+  display: grid;
+  justify-items: center;
 }
+
+/* .recent-section,
+.todays-slang {
+  padding: 20px;
+  display: grid;
+  justify-items: center;
+} */
 
 .section-title {
   width: 249px;
@@ -315,60 +317,23 @@ export default {
   text-align: center;
 }
 
-.slang-list {
-  display: flex;
-  flex-direction: column;
-  margin-top: 10px;
-  gap: 5px;
-}
-
-.slang-item {
-  font-family: JetBrains Mono, sans-serif;
-  border-radius: 10px;
-  background-color: rgba(255, 155, 63, 1);
-  padding: 5px 10px;
-  text-align: center;
-}
-
-.slang-article {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.slang-term {
-  font-family: JetBrains Mono, sans-serif;
-  border-radius: 20px;
-  background-color: rgba(255, 155, 63, 1);
-  margin-top: 15px;
-  white-space: nowrap;
-  justify-content: center;
-  padding: 19px 60px;
-  cursor: pointer;
-  border: none;
-  width: 160px; /* Assuming 40% of a container width of 1850px */
-  margin-left: 50px;
-  font-size: 24px;
-}
-
-.slang-description {
-  font-size: 17px;
-  font-family: Inter;
-  color: #000;
-}
-
 .item-button {
   font-family: JetBrains Mono, sans-serif;
   border-radius: 20px;
   background-color: rgba(255, 155, 63, 1);
   margin-top: 15px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
   justify-content: center;
-  padding: 19px 60px;
+  padding: 20px 50px;
   cursor: pointer;
   border: none;
   width: 160px; /* Assuming 40% of a container width of 1850px */
-  margin-left: 50px;
-  font-size: 24px;
+  font-size: 16px;
+}
+
+.list {
+  text-align: left;
+  width: 100%;
 }
 
 @media (max-width: 991px) {
@@ -383,6 +348,41 @@ export default {
     padding-left: 32px;
     text-align: left !important;
   }
+}
+
+.top-used-slang {
+  text-align: left;
+}
+
+/* .slang-item {
+  font-family: JetBrains Mono, sans-serif;
+  border-radius: 10px;
+  background-color: rgba(255, 155, 63, 1);
+  padding: 5px 10px;
+  text-align: center;
+}
+
+.slang-term {
+  font-family: JetBrains Mono, sans-serif;
+  border-radius: 20px;
+  background-color: rgba(255, 155, 63, 1);
+  margin-top: 15px;
+  white-space: nowrap;
+  justify-content: center;
+  padding: 19px 60px;
+  cursor: pointer;
+  border: none;
+  width: 160px; /* Assuming 40% of a container width of 1850px */
+  /* margin-left: 50px;
+  font-size: 24px; 
+} */
+
+.slang-description {
+  font-size: 17px;
+  font-family: Inter;
+  color: #000;
+  text-align: justify;
+  margin-top: 20px;
 }
 
 .logoSection {
