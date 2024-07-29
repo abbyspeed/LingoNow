@@ -20,9 +20,11 @@
         </li>
       </ul>
     </div>
-    <div class="loginBtn">
-      
-    </div>
+    <router-link to="/Login">
+      <div class="loginBtn">
+        <p>Admin Login</p>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -130,10 +132,23 @@ export default {
   margin-left: 10px;
 }
 
-.loginBtn p {
-  margin-left: 10px;
+.loginBtn {
+  padding: 15px 25px;
+  border: 1px solid white;
+  border-radius: 10px;
+  justify-content: center;
+  transition: 0.3s;
 }
 
+.loginBtn:hover{
+  background-color: white;
+}
+
+.loginBtn p{
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
 
 @media (max-width: 780px) {
   .menu ul {
