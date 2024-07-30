@@ -1,33 +1,38 @@
 <template>
     <div class="rectangle-container">
-        <div class="statistic-div">
-            <div class="text-container">
-                <div class="number">{{ totalSlangs }}</div>
-                <div class="description">Total Slang</div>
+        <div class="statistic-container">
+            <div class="statistic-div">
+                <div class="text-container">
+                    <div class="number">{{ totalSlangs }}</div>
+                    <div class="description">Total Slang</div>
+                </div>
+                <div class="icon">
+                    <img src="@/assets/slang.png" alt="Slang Icon" height="90px" width="90px" />
+                </div>
             </div>
-            <div class="icon">
-                <img src="@/assets/slang.png" alt="Slang Icon" height="90px" width="90px" />
+            
+            <div class="statistic-div">
+                <div class="text-container">
+                    <div class="number">{{ totalLikes }}</div>
+                    <div class="description">Total Like</div>
+                </div>
+                <div class="icon">
+                    <img src="@/assets/thumb-ups.svg" alt="Like Icon" height="70px" width="70px" />
+                </div>
             </div>
-        </div>
-        <div class="statistic-div">
-            <div class="text-container">
-                <div class="number">{{ totalLikes }}</div>
-                <div class="description">Total Like</div>
-            </div>
-            <div class="icon">
-                <img src="@/assets/thumb-ups.svg" alt="Like Icon" height="70px" width="70px" />
-            </div>
-        </div>
-        <div class="statistic-div">
-            <div class="text-container">
-                <div class="number">{{ totalDislikes }}</div>
-                <div class="description">Total Dislike</div>
-            </div>
-            <div class="icon">
-                <img src="@/assets/thumb-down.png" alt="Dislike Icon" height="60px" width="60px" />
+            
+            <div class="statistic-div">
+                <div class="text-container">
+                    <div class="number">{{ totalDislikes }}</div>
+                    <div class="description">Total Dislike</div>
+                </div>
+                <div class="icon">
+                    <img src="@/assets/thumb-down.png" alt="Dislike Icon" height="60px" width="60px" />
+                </div>
             </div>
         </div>
         <div class="graph-div">
+            <h2>Graph Number of Slangs Added VS Month</h2><br>
             <canvas id="slangChart"></canvas>
         </div>
     </div>
@@ -142,14 +147,22 @@ export default {
 <style scoped>
 .rectangle-container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     height: auto;
 }
 
+.statistic-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    padding-bottom: 30px;
+}
+
 .statistic-div {
-    width: 400px; 
+    width: 250px; 
     height: 100px; 
     margin: 10px 20px; 
     border-radius: 10px; 
@@ -202,5 +215,8 @@ export default {
 .graph-div {
     width: 90%;
     margin: 20px;
+    padding: 30px;
+    border: 2px solid black;
+    border-radius: 10px;
 }
 </style>
