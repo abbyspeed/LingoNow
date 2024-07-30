@@ -34,8 +34,7 @@
 </template>
   
 <script>
-// import { mapActions } from 'vuex';
-import { useRouter } from 'vue-router';
+import { mapActions } from 'vuex';
 
 export default {
   props: {
@@ -50,19 +49,22 @@ export default {
       isActive: false,
       dropdownOptions: [
         { label: 'Profile', path: '/Admin/Profile' },
-        { label: 'Logout', path: '/', callback: this.logout }  
+        { label: 'Logout', path: '/', callback: this.handleLogout }  
       ]
     };
   },
 
   methods: {
-    // ...mapActions(['logout']),
+    ...mapActions(['logout']),
 
-    async logout(){
-      // await this.$store.dispatch('logout');
-      console.log("Logged out");
-
-      useRouter.push('/'); 
+    async handleLogout() {
+      try {
+        await this.logout();
+        console.log("Logged out");
+        this.$router.push('/'); 
+      } catch (error) {
+        console.error("Logout error:", error);
+      }
     }
   }
 };

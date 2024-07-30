@@ -53,17 +53,15 @@ const router = createRouter({
 
 // Route guards
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)){
-    if(!store.state.user){
-      next('/Login');
+  const isAuthenticated = !!store.state.user;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-    } else{
-      next();
-    }
-    
-  } else{
+  if (requiresAuth && !isAuthenticated) {
+    next('/Login'); 
+
+  } else {
     next();
   }
-})
+});
 
 export default router;

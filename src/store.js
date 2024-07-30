@@ -44,13 +44,22 @@ export default new Vuex.Store({
             }  
         },
 
-        logout({ commit }){
-            try{
-                commit('clearUser');
+        async logout({ commit }) {
+            try {
+                // Call the API to handle server-side logout
+                await axios.post(`http://localhost/lingonowAPI/index.php/logout`, null, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`  // Include token if needed
+                    }
+                });
+
+                // Clear user from Vuex and localStorage
+                commit('resetUser');
                 localStorage.removeItem('token');
 
-            } catch(error){
-                console.error('Logout error ', error);
+            } catch (error) {
+                console.error('Logout error:', error);
                 throw error;
             }
         }
@@ -63,21 +72,3 @@ export default new Vuex.Store({
 //         return this.$store.state.user;
 //     }
 // },
-
-// methods: {
-//     login(){
-//         const userData = { id: 1, name: 'Nabihah' };
-//         this.$store.dispatch('login', userData);
-//     },
-
-//     logout(){
-//         this.$store.dispatch('logout');
-//     }
-// }
-
-// // To be added to Vue.js or main.js
-// const user = JSON.parse(localStorage.getItem('user'));
-// if(user){
-//     store.commit('setUser', user);
-// }
-
