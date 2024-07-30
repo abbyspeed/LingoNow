@@ -89,34 +89,24 @@ $app->post('/logout', function ($request, $response, $args) use ($db) {
 
 $checkAuth = require 'middleware.php';
 
-// Define your routes with middleware
+// Routes
 $app->group('/Admin', function ($group) {
     $group->get('/Home', function ($request, $response, $args) {
-        // Handle Home route
         $response->getBody()->write("Admin Home");
         return $response;
     });
 
     $group->get('/About', function ($request, $response, $args) {
-        // Handle About route
         $response->getBody()->write("Admin About");
         return $response;
     });
 
     $group->get('/Manage', function ($request, $response, $args) {
-        // Handle Manage route
         $response->getBody()->write("Admin Manage");
         return $response;
     });
 
-    $group->get('/Stats', function ($request, $response, $args) {
-        // Handle Stats route
-        $response->getBody()->write("Admin Stats");
-        return $response;
-    });
-
     $group->get('/Profile', function ($request, $response, $args) {
-        // Handle Profile route
         $response->getBody()->write("Admin Profile");
         return $response;
     });
@@ -196,6 +186,30 @@ $app->post('/resetPwd', function($request, $response, $args) use ($db){
     $stmt->execute(['pwd' => $hashedPassword, 'email' => $email]);
 
     echo 'Password updated successfully.';
+});
+
+// Profile
+// UPDATE
+$app->put('/profile/{id}/update', function($request, $response, $args) use ($db){
+    $profileId = $args['id'];
+
+    try {
+        $conn = $db->connect();
+        $data = $request->getParsedBody();
+
+        $sql = 'UPDATE user SET email=:email, username=:username, fullName=:fullName, phoneNo=:phoneNo  WHERE userId = :userId';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':email', $data['email']);
+        $stmt->bindParam(':username', $data['username']);
+        $stmt->bindParam(':fullName', $data['fullName']);
+        $stmt->bindParam(':phoneNo', $data['phoneNo']);
+        $stmt->bindParam(':userId', $profileId, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $response->withJson(['success' => true]);
+    } catch(Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
 });
 
 // Categories

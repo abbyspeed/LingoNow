@@ -50,7 +50,7 @@
 
         <tr>
           <td colspan="2" style="text-align: center;">
-            <button type="submit">Submit</button>
+            <button type="submit">Save</button>
           </td>
         </tr>
       </table>
