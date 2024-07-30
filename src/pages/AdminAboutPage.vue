@@ -22,25 +22,25 @@ export default {
       switch (route.path) {
         case '/Admin/Home':
           return 'adminHome';
-
+    
         case '/Admin/About':
           return 'adminAbout';
-        
+            
         case '/Admin/Manage':
           return 'adminManage';
-
+    
         case '/Admin/Manage/Create':
           return 'adminManage';
-
+    
         case '/Admin/Manage/:id/Update':
           return 'adminManage';
-
+    
         case '/Admin/Stats':
-          return 'adminStats';
-          
+          return 'adminStats';  
+                
         default:
           return '';
-      }
+        }
     });
 
     const username = computed(() => store.state.user?.username || 'User');

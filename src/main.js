@@ -39,6 +39,7 @@ app.component("aboutUs", AboutUsPage);
 app.component("createPage", CreatePage);
 app.component("categoriesPage", CategoriesPage);
 app.component("deleteDialog", DeleteDialog);
+app.component("profileDropdown", ProfileDropdown);
 
 app.use(router);
 app.use(store);

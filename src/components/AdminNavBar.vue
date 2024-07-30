@@ -23,13 +23,20 @@
       </ul>
     </div>
     <div class="userProfile">
-      <img :src="require('/src/assets/user.png')" alt="user" class="user" />
-      <p>User</p>
+      <profileDropdown :options="dropdownOptions">
+        <template #trigger>
+          <img :src="require('/src/assets/user.png')" alt="user" class="user" />
+          <p>User</p>
+        </template>
+      </profileDropdown>
     </div>
   </div>
 </template>
   
 <script>
+import { mapActions } from 'vuex';
+import { useRouter } from 'vue-router';
+
 export default {
   props: {
     activeRoute: {
@@ -41,8 +48,23 @@ export default {
   data() {
     return {
       isActive: false,
+      dropdownOptions: [
+        { label: 'Profile', path: '/Admin/Profile' },
+        { label: 'Logout', callback: this.logout }  
+      ]
     };
   },
+
+  methods: {
+    ...mapActions(['logout']),
+
+    async logout(){
+      await this.$store.dispatch('logout');
+      console.log("Logged out");
+
+      useRouter.push('/'); 
+    }
+  }
 };
 </script>
 
@@ -132,6 +154,7 @@ export default {
   flex: 1;
   justify-content: flex-end;
   max-width: 200px;
+  flex-direction: column;
 }
 
 .user {
@@ -144,7 +167,6 @@ export default {
 .userProfile p {
   margin-left: 10px;
 }
-
 
 @media (max-width: 780px) {
   .menu ul {
