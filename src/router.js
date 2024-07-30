@@ -24,26 +24,26 @@ const routes = [
   { path: '/Categories', name:"Categories", component: CategoriesPage },
 
   // Admin routes
-  { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage, meta: { requiresAuth: true } },
-  { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage, meta: { requiresAuth: true } },
-  { path: '/Admin/Manage', name: "AdminManage", component: AdminManagePage, meta: { requiresAuth: true } },
-  { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage, meta: { requiresAuth: true } },
-  { path: '/Admin/Profile', name: "AdminProfile", component: AdminProfilePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage', name: "AdminManage", component: AdminManagePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Profile', name: "AdminProfile", component: AdminProfilePage, meta: { requiresAuth: true } },
 
-  { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage, meta: { requiresAuth: true } },
-  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage, meta: { requiresAuth: true } },
-  { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage, meta: { requiresAuth: true } },
 
   // Testing
-  // { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage},
-  // { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage},
-  // { path: '/Admin/Manage', name: "AdminManage", component: AdminManagePage},
-  // { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage},
-  // { path: '/Admin/Profile', name: "AdminProfile", component: AdminProfilePage},
+  { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage},
+  { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage},
+  { path: '/Admin/Manage', name: "AdminManage", component: AdminManagePage},
+  { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage},
+  { path: '/Admin/Profile', name: "AdminProfile", component: AdminProfilePage},
 
-  // { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage},
-  // { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage},
-  // { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage},
+  { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage},
+  { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage},
+  { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage},
 ]
 
 const router = createRouter({
