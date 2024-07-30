@@ -93,7 +93,8 @@ export default {
   padding: 0;
   overflow: hidden;
   height: 1040px;
-  height: max-content; /* Use 'height: max-content' instead of 1040px if dynamic height is desired */
+  height: max-content; 
+  padding-top: 70px;
 }
 
 .header {
@@ -111,12 +112,9 @@ export default {
   align-items: center;
   padding: 0 20px;
   box-sizing: border-box;
-  /* Ensure padding is included in the width */
   color: white;
   background-color: #FF9B3F;
-  /* Optional: Add background color for better visibility */
   font-family: 'Inter', sans-serif;
-  /* Apply Inter font */
 }
 
 .logo {
@@ -284,7 +282,7 @@ export default {
 }
 
 .rectangle-div {
-  width: 350px; /* Assuming the container's width for these elements is around 1850px */
+  width: 350px; 
   position: relative;
   border-radius: 25px;
   background-color: rgba(117, 117, 117, 0);
@@ -301,13 +299,6 @@ export default {
   justify-items: center;
 }
 
-/* .recent-section,
-.todays-slang {
-  padding: 20px;
-  display: grid;
-  justify-items: center;
-} */
-
 .section-title {
   width: 249px;
   position: relative;
@@ -323,12 +314,11 @@ export default {
   border-radius: 20px;
   background-color: rgba(255, 155, 63, 1);
   margin-top: 15px;
-  /* white-space: nowrap; */
   justify-content: center;
   padding: 20px 50px;
   cursor: pointer;
   border: none;
-  width: 160px; /* Assuming 40% of a container width of 1850px */
+  width: 160px;
   font-size: 16px;
 }
 
@@ -392,22 +382,17 @@ export default {
   flex: 1;
   min-width: 200px;
   padding: 0px;
-  /* Ensure minimum width for the logo section */
 }
 
 .logoSection h2 {
   margin: 0;
   font-size: 18px;
-  /* Adjust font size */
 }
 
 .logo {
   width: 40px;
-  /* Adjust the width to make the logo smaller */
   height: auto;
-  /* Maintain aspect ratio */
   margin-right: 10px;
-  /* Space between logo and text */
 }
 
 </style>
