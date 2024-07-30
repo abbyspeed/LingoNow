@@ -56,7 +56,7 @@ export default {
             case '/Admin/Manage/Create':
             return 'adminManage';
 
-            case '/Admin/Manage/:id/Update':
+            case '/Admin/Manage/${route.params.id}/Update':
             return 'adminManage';
 
             case '/Admin/Stats':
@@ -81,7 +81,7 @@ export default {
 
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost/lingonowAPI/index.php/Categories');
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/categories');
                 if (response.data.categories) {
                     categories.value = response.data.categories;
                 } else {
@@ -96,9 +96,9 @@ export default {
         const submitForm = async () => {
             try {
                 console.log('Submitting new slang:', newSlang);
-                const response = await axios.post('http://localhost/lingonowAPI/index.php/Create', newSlang);
+                const response = await axios.post('http://localhost/lingonowAPI/index.php/create', newSlang);
                 console.log('New Slang added:', response.data);
-                router.push('/Manage'); 
+                router.push('/Admin/Manage'); 
             } catch (error) {
                 if (error.response) {
                     console.error('Error response data:', error.response.data);
@@ -112,6 +112,7 @@ export default {
                 console.error('Error config:', error.config);
             }
         };
+        
         onMounted(() => {
             fetchCategories();
         });

@@ -39,8 +39,7 @@ $app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) 
     echo $password;
     echo $user['pwd'];
 
-    if ($user && password_verify($password, $user['pwd']) == true) {
-    // if($user != null){
+    if ($user && password_verify($password, $user['pwd'])) {
         // Password is correct, generate JWT token
         $payload = [
             'username' => $username,
@@ -54,6 +53,7 @@ $app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) 
             'token' => $jwt,
             'user' => ['username' => $username]
         ];
+
         $response->getBody()->write(json_encode($data));
         return $response->withHeader('Content-Type', 'application/json');
 
@@ -213,7 +213,47 @@ $app->post('/create', function($request, $response, $args) use ($db){
 });
 
 // UPDATE
+$app->get('/slangs/{id}', function($request, $response, $args) use ($db) {
+    $slangId = $args['id'];
+    try {
+        $conn = $db->connect();
 
+        $sqlSlang = 'SELECT * FROM slang WHERE slangId = :slangId';
+        $stmtSlang = $conn->prepare($sqlSlang);
+        $stmtSlang->bindParam(':slangId', $slangId, PDO::PARAM_INT);
+        $stmtSlang->execute();
+        $slang = $stmtSlang->fetch(PDO::FETCH_ASSOC);
+
+        if ($slang) {
+            return $response->withJson($slang);
+        } else {
+            return $response->withJson(["error" => "Slang not found"], 404);
+        }
+    } catch(Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()]);
+    }
+});
+
+$app->post('/update', function($request, $response, $args) use ($db){
+    try {
+        $conn = $db->connect();
+        $data = $request->getParsedBody();
+
+        $sql = 'UPDATE slang SET word=:word, meaning=:meaning, example=:example, lastUpdated=:lastUpdated, categoryId=:categoryId) WHERE slangId=:slangId';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':word', $data['word']);
+        $stmt->bindParam(':meaning', $data['meaning']);
+        $stmt->bindParam(':example', $data['example']);
+        $stmt->bindParam(':lastUpdated', $data['lastUpdated']);
+        $stmt->bindParam(':categoryId', $data['categoryId']);
+        $stmt->bindParam(':slangId', $data['slangId']);
+        $stmt->execute();
+
+        return $response->withJson(['success' => true]);
+    } catch(Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
 
 // DELETE
 
