@@ -12,6 +12,8 @@ import OurTeam from "./components/OurTeam.vue"
 import VisionMission from "./components/VisionMission.vue"
 import CategoriesHeader from "./components/CategoriesHeader.vue"
 import CategoriesList from "./components/CategoriesList.vue"
+import SearchSlang from "./components/SearchSlang.vue"
+import HomeContent from "./components/HomeContent.vue"
 import SearchPage from "./pages/SearchPage.vue"
 import HomePageBeforeLogin from './pages/HomePage.vue';
 import ManagePage from './pages/AdminManagePage.vue'
@@ -19,7 +21,7 @@ import AboutUsPage from './pages/AboutUsPage.vue';
 import CreatePage from './pages/AdminCreatePage.vue';
 import CategoriesPage from './pages/CategoriesPage.vue';
 import AdminNavBar from './components/AdminNavBar.vue'
-import DeleteDialog from './components/DeleteDialog.vue'
+import DeleteDialog from './components/deleteDialog.vue'
 import ProfileDropdown from './components/ProfileDropdown.vue'
 
 const app = createApp(App);
@@ -32,6 +34,8 @@ app.component("ourTeam", OurTeam);
 app.component("visionMission", VisionMission);
 app.component("categoriesHeader", CategoriesHeader);
 app.component("categoriesList", CategoriesList);
+app.component("searchSlang", SearchSlang);
+app.component("homeContent", HomeContent);
 app.component("searchPage", SearchPage);
 app.component("HomePageBeforeLogin",HomePageBeforeLogin);
 app.component("managePage", ManagePage);

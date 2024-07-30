@@ -1,6 +1,6 @@
 <template>
     <div class="developer">
-      <img src="@/assets/user.png" :alt="name" />
+      <img :src="imgSrc" :alt="name" />
       <p>{{ name }}</p>
     </div>
   </template>
@@ -12,8 +12,13 @@
       name: {
         type: String,
         required: true
+      },
+      imgSrc: {
+        type: String,
+        required: true
       }
     }
+    
   };
   </script>
   
