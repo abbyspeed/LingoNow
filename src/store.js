@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default new Vuex.Store({
     state: {
-        user: JSON.parse(localStorage.getItem('user')) || null,
+        user: null,
     },
 
     mutations: {
@@ -46,16 +46,18 @@ export default new Vuex.Store({
 
         async logout({ commit }) {
             try {
-                // Call the API to handle server-side logout
                 await axios.post(`http://localhost/lingonowAPI/index.php/logout`, null, {
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`  // Include token if needed
+                        'Authorization': `Bearer ${localStorage.getItem('token')}` 
                     }
                 });
 
-                // Clear user from Vuex and localStorage
                 commit('resetUser');
+
+                console.log(localStorage.getItem('token'));
+                console.log(this.$store.state.user);
+
                 localStorage.removeItem('token');
 
             } catch (error) {

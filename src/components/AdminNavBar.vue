@@ -61,7 +61,9 @@ export default {
       try {
         await this.logout();
         console.log("Logged out");
+        
         this.$router.push('/'); 
+
       } catch (error) {
         console.error("Logout error:", error);
       }

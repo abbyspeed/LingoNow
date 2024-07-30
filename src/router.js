@@ -53,7 +53,7 @@ const router = createRouter({
 
 // Route guards
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!store.state.user;
+  const isAuthenticated = store.state.user;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   if (requiresAuth && !isAuthenticated) {
