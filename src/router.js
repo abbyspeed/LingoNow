@@ -13,6 +13,7 @@ import AdminUpdatePage from './pages/AdminUpdatePage.vue'
 import AdminStatsPage from './pages/AdminStatsPage.vue'
 import AdminManagePage from './pages/AdminManagePage.vue'
 import AdminProfilePage from './pages/AdminProfilePage.vue'
+import AdminProfileUpdatePage from './pages/AdminProfileUpdatePage.vue'
 
 const routes = [
   { path: '/', name: "Home", component: HomePage },
@@ -41,6 +42,7 @@ const routes = [
 
   { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage},
   { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage},
+  { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage},
 ]
 
 const router = createRouter({
