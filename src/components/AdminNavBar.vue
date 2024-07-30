@@ -14,11 +14,11 @@
         <li :class="{ 'active-link': activeRoute === 'adminAbout'}">
           <router-link to="/Admin/About" active-class="active-link" exact>About Us</router-link>
         </li>
-        <li :class="{ 'active-link': activeRoute === 'categories'}">
-          <router-link to="/Admin/Categories" active-class="active-link" exact>Categories</router-link>
-        </li>
         <li :class="{ 'active-link': activeRoute === 'adminManage'}">
           <router-link to="/Admin/Manage" active-class="active-link" exact>Manage</router-link>
+        </li>
+        <li :class="{ 'active-link': activeRoute === 'adminStats'}">
+          <router-link to="/Admin/Stats" active-class="active-link" exact>Statistics</router-link>
         </li>
       </ul>
     </div>

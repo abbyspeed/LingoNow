@@ -11,6 +11,7 @@ import AdminCreatePage from './pages/AdminCreatePage.vue'
 import AdminAboutPage from './pages/AdminAboutPage.vue'
 import AdminUpdatePage from './pages/AdminUpdatePage.vue'
 import AdminStatsPage from './pages/AdminStatsPage.vue'
+import AdminManagePage from './pages/AdminManagePage.vue'
 
 const routes = [
   { path: '/', name: "Home", component: HomePage },
@@ -33,12 +34,11 @@ const routes = [
   // Testing
   { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage},
   { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage},
-  { path: '/Admin/Manage', name: "AdminManage", component: AdminHomePage},
+  { path: '/Admin/Manage', name: "AdminManage", component: AdminManagePage},
   { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage},
 
   { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage},
   { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage},
-  { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage},
 ]
 
 const router = createRouter({

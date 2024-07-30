@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navBar :activeRoute="categories"></navBar>
+    <navBar></navBar>
     <div class="background">
       <categoriesHeader @category-selected="handleCategorySelected" />
       <categoriesList v-if="selectedCategory" :category="selectedCategory" />

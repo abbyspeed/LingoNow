@@ -29,7 +29,7 @@
         </div>
 
         <button class="newSlang">
-            <router-link to="/Create">Create a new slang</router-link>
+            <router-link to="/Admin/Manage/Create">Create a new slang</router-link>
         </button>
 
         <deleteDialog
@@ -105,7 +105,6 @@ export default {
             if (slangToDelete.value) {
                 try {
                     await axios.delete(`http://localhost/lingonowAPI/index.php/slangs/${slangToDelete.value}`);
-                    // Remove the deleted slang from the list
                     slang.value = slang.value.filter(item => item.slangId !== slangToDelete.value);
                 } catch (error) {
                     console.error('Error deleting slang:', error);
