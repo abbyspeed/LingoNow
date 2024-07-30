@@ -41,8 +41,14 @@ export default new Vuex.Store({
         },
 
         logout({ commit }){
-            commit('clearUser');
-            localStorage.removeItem('token');
+            try{
+                commit('clearUser');
+                localStorage.removeItem('token');
+
+            } catch(error){
+                console.error('Logout error ', error);
+                throw error;
+            }
         }
     }
 });

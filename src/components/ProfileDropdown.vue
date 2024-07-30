@@ -6,11 +6,11 @@
       
       <div v-if="isDropdownOpen" class="dropdown-menu">
         <ul v-for="(option, index) in options" :key="index">
-            <router-link :to="option.path" @click="handleMenuClick(option.label)">
-                <li>    
-                    {{ option.label }}
-                </li>
-            </router-link>
+          <router-link :to="option.path" @click="handleMenuClick(option.label)">
+            <li>    
+              {{ option.label }}
+            </li>
+          </router-link>
         </ul>
       </div>
     </div>
@@ -22,28 +22,32 @@ import { ref } from 'vue';
 export default {
     name: 'ProfileDropdown',
     props: {
-        options: {
-            type: Array,
-            required: true
-        }
+      options: {
+        type: Array,
+        required: true
+      }
     },
     setup() {
-        const isDropdownOpen = ref(false);
+      const isDropdownOpen = ref(false);
 
-        const toggleDropdown = () => {
-            isDropdownOpen.value = !isDropdownOpen.value;
-        };
+      const toggleDropdown = () => {
+          isDropdownOpen.value = !isDropdownOpen.value;
+      };
 
-        const handleMenuClick = (option) => {
-            console.log(`Selected: ${option}`);
-            isDropdownOpen.value = false;
-        };
+      const handleMenuClick = (option) => {
+        if(option.callback){
+          option.callback();
+        }
+        
+        console.log(`Selected: ${option}`);
+        isDropdownOpen.value = false;
+      };
 
-        return {
-            isDropdownOpen,
-            toggleDropdown,
-            handleMenuClick
-        };
+      return {
+        isDropdownOpen,
+        toggleDropdown,
+        handleMenuClick
+      };
     }
 };
 </script>
