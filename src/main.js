@@ -20,6 +20,7 @@ import CreatePage from './pages/AdminCreatePage.vue';
 import CategoriesPage from './pages/CategoriesPage.vue';
 import AdminNavBar from './components/AdminNavBar.vue'
 import DeleteDialog from './components/deleteDialog.vue'
+import ProfileDropdown from './components/ProfileDropdown.vue'
 
 const app = createApp(App);
 app.component("customForm", CustomForm);
