@@ -70,6 +70,7 @@ body {
 
 .background {
     width: 100%;
+    padding-top: 70px;
     background-color: FF9B3F;
     background-size: cover;
 }

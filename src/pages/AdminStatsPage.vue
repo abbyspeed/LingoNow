@@ -1,6 +1,6 @@
 <template>
-    <adminNavBar :activeRoute="currentRoute"></adminNavBar>
-    <h2>UPDATE LATER</h2>
+  <adminNavBar :activeRoute="currentRoute"></adminNavBar>
+  <h2>UPDATE SOON</h2>
 </template>
 
 <script>
@@ -55,3 +55,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+* {
+  padding-top: 100px;
+}
+</style>

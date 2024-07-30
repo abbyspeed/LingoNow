@@ -1,7 +1,6 @@
 <template>
   <adminNavBar :activeRoute="currentRoute"></adminNavBar>
-  <h2>Manage Slangs</h2>
-  <slangTable></slangTable>
+  <h2>UPDATE SOON</h2>
 </template>
 
 <script>
@@ -51,13 +50,7 @@ export default {
 </script>
 
 <style scoped>
-.newSlang {
-    background-color: #ff9b3f;
-    border-radius: 5px;
-    border: none;
-    margin-bottom: 30px;
-    padding: 10px;
-    cursor: pointer;
-    color: #2C3E50;
+* {
+  padding-top: 100px;
 }
 </style>
