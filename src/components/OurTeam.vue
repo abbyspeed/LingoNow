@@ -6,7 +6,7 @@
       <OurDeveloper name="Haneen Mo'men" :imgSrc="require('@/assets/haneen.jpg')" />
       <OurDeveloper name="Wan Nurnabihah" :imgSrc="require('@/assets/wan_nurnabihah.jpg')" />
       <OurDeveloper name="Norliyana Aisyah" :imgSrc="require('@/assets/norliyana.jpg')" />
-      <OurDeveloper name="Sakif Hossain" :imgSrc="require('@/assets/user.png')" />
+      <OurDeveloper name="Sakif Hossain" :imgSrc="require('@/assets/sakif.jpg')" />
     </div>
   </div>
 </template>
