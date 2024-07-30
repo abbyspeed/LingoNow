@@ -96,7 +96,7 @@ export default {
         const submitForm = async () => {
             try {
                 console.log('Submitting new slang:', newSlang);
-                const response = await axios.post('http://localhost/lingonowAPI/index.php/create', newSlang);
+                const response = await axios.post('http://localhost/lingonowAPI/index.php/slangs/create', newSlang);
                 console.log('New Slang added:', response.data);
                 router.push('/Admin/Manage'); 
             } catch (error) {

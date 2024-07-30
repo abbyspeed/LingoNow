@@ -159,6 +159,7 @@ $app->get('/categories', function($request, $response, $args) use ($db){
     }
 });
 
+// Slangs
 // READ
 $app->get('/slangs', function($request, $response, $args) use ($db){
     try{
@@ -176,7 +177,7 @@ $app->get('/slangs', function($request, $response, $args) use ($db){
 });
 
 // READ
-$app->get('/category', function($request, $response, $args) use ($db){
+$app->get('/slangs/category', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
 
@@ -192,7 +193,7 @@ $app->get('/category', function($request, $response, $args) use ($db){
 });
 
 // CREATE
-$app->post('/create', function($request, $response, $args) use ($db){
+$app->post('/slangs/create', function($request, $response, $args) use ($db){
     try {
         $conn = $db->connect();
         $data = $request->getParsedBody();
@@ -215,6 +216,7 @@ $app->post('/create', function($request, $response, $args) use ($db){
 // UPDATE
 $app->get('/slangs/{id}', function($request, $response, $args) use ($db) {
     $slangId = $args['id'];
+
     try {
         $conn = $db->connect();
 
@@ -234,19 +236,22 @@ $app->get('/slangs/{id}', function($request, $response, $args) use ($db) {
     }
 });
 
-$app->post('/update', function($request, $response, $args) use ($db){
+$app->put('/slangs/{id}/update', function($request, $response, $args) use ($db){
+    $slangId = $args['id'];
+
     try {
         $conn = $db->connect();
         $data = $request->getParsedBody();
 
-        $sql = 'UPDATE slang SET word=:word, meaning=:meaning, example=:example, lastUpdated=:lastUpdated, categoryId=:categoryId) WHERE slangId=:slangId';
+        $sql = 'UPDATE slang SET word=:word, meaning=:meaning, example=:example, lastUpdated=:lastUpdated, categoryId=:categoryId WHERE slangId=:slangId';
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':word', $data['word']);
         $stmt->bindParam(':meaning', $data['meaning']);
         $stmt->bindParam(':example', $data['example']);
         $stmt->bindParam(':lastUpdated', $data['lastUpdated']);
         $stmt->bindParam(':categoryId', $data['categoryId']);
-        $stmt->bindParam(':slangId', $data['slangId']);
+        $stmt->bindParam(':slangId', $slangId, PDO::PARAM_INT);
+
         $stmt->execute();
 
         return $response->withJson(['success' => true]);

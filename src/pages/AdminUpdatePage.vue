@@ -72,6 +72,7 @@ export default {
 
     const categories = ref([]);
     const router = useRouter();
+    const { id } = route.params;
 
     const fetchCategories = async () => {
       try {
@@ -89,7 +90,6 @@ export default {
 
     const fetchSlang = async () => {
       try {
-        const { id } = route.params;
         const response = await axios.get(`http://localhost/lingonowAPI/index.php/slangs/${id}`);
         Object.assign(slang, response.data);
         console.log('Fetched slang:', slang);
@@ -97,8 +97,6 @@ export default {
         console.error('Error fetching slang:', error);
       }
     };
-
-    // fetchSlang();
 
     let slang = reactive({
         word: '',
@@ -111,7 +109,7 @@ export default {
     const updateForm = async () => {
       try {
         console.log('Updating selected slang:', slang);
-        const response = await axios.post('http://localhost/lingonowAPI/index.php/create', slang);
+        const response = await axios.put(`http://localhost/lingonowAPI/index.php/slangs/${id}/update`, slang);
         console.log('Slang updated:', response.data);
         router.push('/Admin/Manage'); 
 
