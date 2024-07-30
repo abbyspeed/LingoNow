@@ -11,7 +11,7 @@
         </div>
         <div class="statistic-div">
             <div class="text-container">
-                <div class="number">4</div>
+                <div class="number">{{ totalLikes }}</div>
                 <div class="description">Total Like</div>
             </div>
             <div class="icon">
@@ -20,7 +20,7 @@
         </div>
         <div class="statistic-div">
             <div class="text-container">
-                <div class="number">4</div>
+                <div class="number">{{ totalDislikes }}</div>
                 <div class="description">Total Dislike</div>
             </div>
             <div class="icon">
@@ -35,46 +35,81 @@
 
 <script>
 import { ref, onMounted } from 'vue';
+import axios from 'axios';
 import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
 export default {
-    name: 'SlangStatistic',
-    props: {
-        totalSlangs: {
-            type: String,
-            required: true
-        }
-    },
     setup() {
         const totalSlangs = ref(0);
+        const totalLikes = ref(0);
+        const totalDislikes = ref(0);
+        const slangChart = ref(null);
 
-        //Calculate TotalSlangs
         const fetchTotalSlangs = async () => {
             try {
-                const response = await fetch('http://localhost/lingonowAPI/slang/total');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/total');
+                if (response.data && response.data.total.length > 0) {
+                    totalSlangs.value = response.data.total; 
+                } else {
+                    console.error('Expected a number of slang, but got:', response.data);
                 }
-                const data = await response.json();
-                totalSlangs.value = data.total;
+                    
             } catch (error) {
                 console.error('Error fetching total slangs:', error);
             }
         };
 
-        const renderChart = () => {
+        const fetchLikeDislike = async () => {
+            try {
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/like-dislike');
+                if (response.data && response.data.totalLikes !== undefined && response.data.totalDislikes !== undefined) {
+                    totalLikes.value = response.data.totalLikes; 
+                    totalDislikes.value = response.data.totalDislikes;
+                } else {
+                    console.error('Expected totalLikes and totalDislikes, but got:', response.data);
+                }
+                    
+            } catch (error) {
+                console.error('Error fetching like-dislike slangs:', error);
+            }
+        };
+
+        const fetchSlangsByMonth = async () => {
+            try {
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/chart');
+                return response.data;
+            } catch (error) {
+                console.error('Error fetching slangs by month:', error);
+                return [];
+            }
+        };
+
+
+        const renderChart = async () => {
+            const data = await fetchSlangsByMonth();
+
+            const labels = [];
+            const counts = [];
+
+            data.forEach(item => {
+                const [year, month] = item.month.split('-');
+                const monthName = new Date(Date.UTC(year, month - 1)).toLocaleString('default', { month: 'long' });
+                labels.push(`${monthName} ${year}`);
+                counts.push(item.count);
+            });
+
             const ctx = document.getElementById('slangChart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+                    labels: labels,
                     datasets: [{
                         label: 'Slangs Added',
-                        data: [12, 19, 3, 5, 2, 3, 7], //NEED TO ADD BACKEND 
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        data: counts,
+                        backgroundColor: '#FF9B3F',
+                        borderColor: '#FF9B3F',
                         borderWidth: 1
                     }]
                 },
@@ -88,11 +123,18 @@ export default {
             });
         };
 
-        onMounted(async () => {
-            await fetchTotalSlangs();
+        onMounted(() => {
+            fetchTotalSlangs();
+            fetchLikeDislike();
             renderChart();
         });
 
+        return {
+            totalSlangs,
+            totalDislikes,
+            totalLikes,
+            slangChart
+        };
     }
 }
 </script>

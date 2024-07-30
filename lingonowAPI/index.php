@@ -371,4 +371,59 @@ $app->delete('/slangs/{id}/delete', function($request, $response, $args) use ($d
     }
 });
 
+// TOTAL SLANG
+$app->get('/total', function($request, $response, $args) use ($db) {
+    try {
+        $conn = $db->connect();
+
+        $sqlCount = 'SELECT COUNT(*) AS total FROM slang';
+        $stmtCount = $conn->prepare($sqlCount);
+        $stmtCount->execute();
+        $result = $stmtCount->fetch(PDO::FETCH_ASSOC);
+
+        $total = $result['total'];
+
+        return $response->withJson(['total' => $total]);
+    } catch (Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
+// RETRIEVE LIKE & DISLIKE
+$app->get('/like-dislike', function($request, $response, $args) use ($db) {
+    try {
+        $conn = $db->connect();
+
+        $sql = 'SELECT SUM(likes) AS totalLikes, SUM(dislikes) AS totalDislikes FROM slang';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $totalLikes = $result['totalLikes'];
+        $totalDislikes = $result['totalDislikes'];
+
+        return $response->withJson(['totalLikes' => $totalLikes, 'totalDislikes' => $totalDislikes]);
+    } catch (Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
+// RETRIEVE CHART DATA
+$app->get('/chart', function($request, $response, $args) use ($db) {
+    try {
+        $conn = $db->connect();
+
+        $sqlCountByMonth = "SELECT DATE_FORMAT(lastUpdated, '%Y-%m') AS month, COUNT(*) AS count FROM slang GROUP BY month ORDER BY month";
+        
+        $stmtCountByMonth = $conn->prepare($sqlCountByMonth);
+        $stmtCountByMonth->execute();
+        $result = $stmtCountByMonth->fetchAll(PDO::FETCH_ASSOC);
+
+        // Return the result as JSON
+        return $response->withJson($result);
+    } catch (Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
 $app->run();
