@@ -1,12 +1,16 @@
 <template>
   <adminNavBar :activeRoute="currentRoute" class="adminNavBar"></adminNavBar>
-    <div class="background"></div>
-    <div class="title-section">
-      <div class="text">
-        <h2>Manage Slangs</h2>
-        <p>Welcome to the Manage Slangs page! Here, you can add, edit, or remove slang entries to keep everyone in the loop.</p>
+    <div class="background">
+      <div class="title-section">
+        <div class="text">
+          <h2>Manage Slangs</h2>
+          <p>Welcome to the Manage Slangs page! Here, you can add, edit, or remove slang entries to keep everyone in the loop.</p>
+        </div>
       </div>
-      <img :src="require('/src/assets/settings.png')" alt="Manage Slangs" class="manage" />
+      
+      <div class="manage">
+        <img :src="require('/src/assets/settings.png')" alt="Manage Slangs" height="300px" width="300px"/>
+      </div>
     </div>
   <slangTable></slangTable>
 </template>
@@ -59,55 +63,48 @@ export default {
 
 <style scoped>
 * {
+  margin: 0;
+  padding-top: 0px;
   box-sizing: border-box;
-  /* overflow-x: hidden; */
+  font-family: 'Roboto', sans-serif;
+}
+
+.body {
+  background-color: #f0f0f0;
+  color: black;
 }
 
 .background {
-  position: absolute; 
-  width: 100vw; 
-  height: 400px;  
-  background-color: #FF9B3F;  
-  color: white; 
+  width: 100%;
+  background-color: #FF9B3F;
+  background-size: cover;
+  padding: 80px 100px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  border-radius: 8px; 
-  top: 0px;  
-  z-index: 0; 
 }
 
 .title-section {
-  display: flex;
-  padding: 100px 25px 20px 25px;
-  justify-content: space-around;
-  align-items: center; 
-  flex-direction: row;
-  position: relative; 
-  z-index: 2;  
-  width: 100%;
+  flex: 1;
+  margin-right: 2rem;
+  width: fit-content;
 }
 
 .title-section h2,
 .title-section p {
   text-align: left;
+  padding-left: 40px;
+  color: black;
 }
 
 .title-section h2 {
   color: #000;
-  font-family: Inter;
-  font-size: 64px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   margin-bottom: 20px;
 }
 
-.manage {
-  width: auto;
-  height: auto;
-  border-radius: 50%;
-  /* margin-left: 10px; */
-  margin: 20px 25px 20px 25px;
-}
 </style>
