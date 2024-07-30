@@ -1,7 +1,7 @@
 <template>
     <adminNavBar :activeRoute="currentRoute"></adminNavBar>
     <div class="top">
-        <div class="userBg"></div>
+        <img :src="require('/src/assets/profile_bg.jpg')" class="userBg"/>
         <img :src="require('/src/assets/user.png')" alt="user" class="user" />
         <div class="profileText">
             <p>{{ profile.username }}</p>
@@ -152,6 +152,8 @@ export default {
     top: -50px;
     left: 0;
     z-index: 0;
+    object-fit: cover;
+    object-position: 50% 50%; 
 }
 
 .user {
