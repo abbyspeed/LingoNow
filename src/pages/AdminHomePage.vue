@@ -1,6 +1,9 @@
 <template>
   <adminNavBar :activeRoute="currentRoute"></adminNavBar>
-  <h2>UPDATE SOON</h2>
+  <div class="background">
+    <welcomeAdmin></welcomeAdmin>
+    <slangStatistic></slangStatistic>
+  </div>
 </template>
 
 <script>
@@ -51,6 +54,20 @@ export default {
 
 <style scoped>
 * {
-  padding-top: 100px;
+  margin: 0;
+  padding-top: 0px;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background-color: #f0f0f0;
+  color: black;
+}
+
+.background {
+  width: 100%;
+  background-color: #FF9B3F;
+  background-size: cover;
 }
 </style>
