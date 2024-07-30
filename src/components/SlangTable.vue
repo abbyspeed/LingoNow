@@ -28,9 +28,9 @@
             <button @click="nextPage" :disabled="currentPage === pageCount">Next</button>
         </div>
 
-        <button class="newSlang">
-            <router-link to="/Admin/Manage/Create">Create a new slang</router-link>
-        </button>
+        <router-link to="/Admin/Manage/Create">
+            <button class="newSlang">Create a new slang</button>
+        </router-link>
 
         <deleteDialog
             :isVisible="isDialogVisible"
@@ -150,7 +150,25 @@ export default {
 
 <style scoped>
 .newSlang {
-    margin-bottom: 20px;
+    margin: 20px 0;
+    padding: 10px 50px;
+    background-color: white;
+    border: 1px solid #FF9B3F;
+    border-radius: 10px;
+    color: black;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.newSlang a {
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.newSlang:hover {
+    background-color: #FF9B3F;
+    color: white;
+    cursor: pointer;
 }
 
 .table-container {

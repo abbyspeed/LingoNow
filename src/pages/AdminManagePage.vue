@@ -106,5 +106,4 @@ export default {
   line-height: normal;
   margin-bottom: 20px;
 }
-
 </style>

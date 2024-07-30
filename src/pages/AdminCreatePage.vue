@@ -1,29 +1,58 @@
 <template>
     <adminNavBar :activeRoute="currentRoute"></adminNavBar>
-
+    <div class="title-section">
+        <h2>One Slang a New Day Keeps the Ignorance Away</h2>
+        <p>Our users are looking forward to receive the most accurate representation of the slang.
+        <br>
+        Add the latest slang and get our users connected!
+        </p>
+    </div>
     <div class="form-container">
         <form @submit.prevent="submitForm">
-            <label for="word">Slang: </label>
-            <input v-model="newSlang.word" type="text" id="word" required />
-            <p></p>
-            <label for="categoryId">Category: </label>
-            <select v-model="newSlang.categoryId" id="categoryId" required>
+        <table>
+            <tr class="double">
+            <td>
+                <label for="word">Slang </label>
+                <input v-model="newSlang.word" type="text" id="word" required />
+            </td>
+            <td>
+                <label for="categoryId">Category </label>
+                <select v-model="newSlang.categoryId" id="categoryId" required>
                 <option value="">Select Category</option>
                 <option v-for="category in categories" :key="category.categoryId" :value="category.categoryId">
                     {{ category.title }}
                 </option>
-            </select>
-            <p></p>
-            <label for="meaning">Meaning: </label>
-            <textarea v-model="newSlang.meaning" id="meaning" required></textarea>
-            <p></p>
-            <label for="example">Example: </label>
-            <textarea v-model="newSlang.example" id="example" required></textarea>
-            <p></p>
-            <label for="lastUpdated">Date: </label>
-            <input v-model="newSlang.lastUpdated" type="date" id="lastUpdated" required />
-            <p></p>
-            <button type="submit">Submit</button>
+                </select>
+            </td>
+            </tr>
+
+            <tr class="single">
+            <td colspan="2">
+                <label for="meaning">Meaning </label>
+                <textarea v-model="newSlang.meaning" id="meaning" required></textarea>
+            </td>
+            </tr>
+
+            <tr class="single">
+            <td colspan="2">
+                <label for="example">Example </label>
+                <textarea v-model="newSlang.example" id="example" required></textarea>
+            </td>
+            </tr>
+            
+            <tr class="single">
+            <td colspan="2">
+                <label for="lastUpdated">Date </label>
+                <input v-model="newSlang.lastUpdated" type="date" id="lastUpdated" required />
+            </td>
+            </tr>
+
+            <tr>
+            <td colspan="2" style="text-align: center;">
+                <button type="submit">Save</button>
+            </td>
+            </tr>
+        </table>
         </form>
     </div>
 </template>
@@ -129,28 +158,80 @@ export default {
 </script>
 
 <style scoped>
-.form-container {
-    padding: 25px;
+.title-section {
+  margin-top: 130px;
+  margin-bottom: 50px;
 }
 
-input, textarea {
-    border-radius: 10px;
-    color: #2C3E50;
-    height: 3vh;
-    width: 25vh;
-    margin-bottom: 10px;
+h2 {
+  padding: 10px 0;
+  font-size: 36px;
+}
+
+.form-container {
+  width: 50%;
+  margin: 0 auto; 
+  background-color: white;
+  margin-bottom: 40px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.1);
+  padding: 20px 10px;
+}
+
+table {
+  width: 100%;
+  border-spacing: 10px;
+}
+
+td {
+  vertical-align: top;
+  padding: 8px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  box-sizing: border-box;
+  border-radius: 5px;
 }
 
 textarea {
-    height: 6vh;
+  height: 100px;
 }
 
 button {
-    background-color: #ff9b3f;
-    border-radius: 5px;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    color: #2C3E50;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 50%;
+  border-radius: 10px;
+  border: 1px solid #FF9B3F;
+  background-color: #FF9B3F;
+  transition: 0.3s;
+  font-weight: 600;
+  color: black;
+}
+
+button:hover {
+  border: 1px solid #FF9B3F;
+  background-color: white;
+  color: #FF9B3F;
+  font-weight: 600;
+}
+
+tr.double td {
+  width: 50%;
+}
+
+tr.single td {
+  width: 100%;
+  padding-top: 8px;
 }
 </style>
