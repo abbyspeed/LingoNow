@@ -12,6 +12,9 @@
         <li :class="{ 'active-link': activeRoute === 'home'}">
           <router-link to="/" active-class="active-link" exact>Home</router-link>
         </li>
+        <li :class="{ 'active-link': activeRoute === 'search'}">
+          <router-link to="/Search" active-class="active-link" exact>Search</router-link>
+        </li>
         <li :class="{ 'active-link': activeRoute === 'about'}">
           <router-link to="/About" active-class="active-link" exact>About Us</router-link>
         </li>
