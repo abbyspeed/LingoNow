@@ -99,8 +99,6 @@ export default {
         // Get 5 random slangs for topSlangs
         const shuffled = slangs.slice().sort(() => 0.5 - Math.random());
         this.topSlangs = shuffled.slice(0, 5);
-
-        console.log();
     }
   },
 };

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export default new Vuex.Store({
     state: {
-        user: null,
+        user: JSON.parse(localStorage.getItem('user')) || null,
     },
 
     mutations: {
@@ -21,12 +21,16 @@ export default new Vuex.Store({
     actions: {
         async login({ commit }, credentials){
             try{
-                const response = await axios.get('http://localhost/lingonowAPI/index.php/login', credentials);
+                const response = await axios.post(`http://localhost/lingonowAPI/index.php/login`, credentials, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
                 console.log('Login response:', response.data);
                 const user = response.data.user;
                 const token = response.data.token;
 
-                if(user && token != null){
+                if(user && token){
                     commit('setUser', user);
                     localStorage.setItem('token', token);
 
