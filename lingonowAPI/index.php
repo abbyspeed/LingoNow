@@ -21,6 +21,7 @@ $app->get('/', function(){
 });
 
 // Auth
+// CHECK CREDENTIALS
 $app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) {
     $conn = $db->connect();
 
@@ -70,6 +71,7 @@ $app->get('/users', function($request, $response, $args){
     echo 'Hello' .$name;
 });
 
+// CREATE (ON HOLD)
 $app->post('/users', function($request, $response, $args) use ($db){
     $conn = $db->connect();
     $data = $request->getParsedBody();
@@ -104,7 +106,8 @@ $app->post('/users', function($request, $response, $args) use ($db){
     
 });
 
-// UPDATE PASSWORD
+// Password
+// UPDATE
 $app->post('/resetPwd', function($request, $response, $args) use ($db){
     $conn = $db->connect();
     $input = $request->getParsedBody();
@@ -176,7 +179,6 @@ $app->get('/slangs', function($request, $response, $args) use ($db){
     }
 });
 
-// READ
 $app->get('/slangs/category', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
@@ -261,5 +263,25 @@ $app->put('/slangs/{id}/update', function($request, $response, $args) use ($db){
 });
 
 // DELETE
+$app->delete('/slangs/{id}/delete', function($request, $response, $args) use ($db) {
+    $slangId = $args['id'];
+
+    try {
+        $conn = $db->connect();
+ 
+        $sql = 'DELETE FROM slang WHERE slangId = :id';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $slangId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            return $response->withJson(['message' => 'Slang deleted successfully'], 200);
+        } else {
+            return $response->withJson(['message' => 'No slang found with that ID'], 404);
+        }
+    } catch (Exception $e) {
+        return $response->withJson(['error' => 'Error: ' . $e->getMessage()], 500);
+    }
+});
 
 $app->run();
