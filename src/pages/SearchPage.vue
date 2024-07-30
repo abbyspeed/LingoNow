@@ -1,5 +1,5 @@
 <template>
-    <navBar></navBar>
+    <navBar :activeRoute="currentRoute"></navBar>
     <div class="search-section">
         <div class="search-content">
             <h2 class="search-title">Search the SLANG</h2>
@@ -33,7 +33,42 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex';
+
 export default {
+    setup() {
+        const route = useRoute();
+        const store = useStore();
+
+        const currentRoute = computed(() => {
+        console.log('Current path:', route.path);
+        switch (route.path) {
+            case '/':
+            return 'home';
+
+            case '/Search':
+            return 'search';
+            
+            case '/About':
+            return 'about';
+
+            case '/Categories':
+            return 'categories';
+
+            default:
+            return '';
+        }
+        });
+
+        const username = computed(() => store.state.user?.username || 'User');
+
+        return {
+        currentRoute,
+        username
+        };
+    },
     data() {
         return {
             slangList: [],  
@@ -51,23 +86,23 @@ export default {
         }
     },
     methods: {
-async fetchSlangData() {
-        try {
-            const response = await fetch('http://localhost/lingonowAPI/index.php/slangs');
-            if (!response.ok) {
-                throw new Error(`Failed to fetch data: ${response.statusText}`);
+        async fetchSlangData() {
+            try {
+                const response = await fetch('http://localhost/lingonowAPI/index.php/slangs');
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch data: ${response.statusText}`);
+                }
+                const data = await response.json();
+                if (Array.isArray(data.slangs)) {
+                    this.slangList = data.slangs;
+                } else {
+                    console.error('Fetched data does not contain an array in "slangs":', data);
+                    this.slangList = []; 
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
             }
-            const data = await response.json();
-            if (Array.isArray(data.slangs)) {
-                this.slangList = data.slangs;
-            } else {
-                console.error('Fetched data does not contain an array in "slangs":', data);
-                this.slangList = []; 
-            }
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    },
+        },
         async like(slangId) {
             try {
                 await fetch(`/api/slang/${slangId}/like`, { method: 'POST' });
