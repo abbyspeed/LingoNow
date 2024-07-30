@@ -14,6 +14,8 @@ import CategoriesHeader from "./components/CategoriesHeader.vue"
 import CategoriesList from "./components/CategoriesList.vue"
 import SearchSlang from "./components/SearchSlang.vue"
 import HomeContent from "./components/HomeContent.vue"
+import WelcomeAdmin from "./components/WelcomeAdmin.vue"
+import SlangStatistic from "./components/SlangStatistic.vue"
 import SearchPage from "./pages/SearchPage.vue"
 import HomePageBeforeLogin from './pages/HomePage.vue';
 import ManagePage from './pages/AdminManagePage.vue'
@@ -36,6 +38,8 @@ app.component("categoriesHeader", CategoriesHeader);
 app.component("categoriesList", CategoriesList);
 app.component("searchSlang", SearchSlang);
 app.component("homeContent", HomeContent);
+app.component("welcomeAdmin", WelcomeAdmin);
+app.component("slangStatistic", SlangStatistic);
 app.component("searchPage", SearchPage);
 app.component("HomePageBeforeLogin",HomePageBeforeLogin);
 app.component("managePage", ManagePage);

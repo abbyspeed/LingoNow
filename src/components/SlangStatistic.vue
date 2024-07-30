@@ -50,6 +50,7 @@ export default {
     setup() {
         const totalSlangs = ref(0);
 
+        //Calculate TotalSlangs
         const fetchTotalSlangs = async () => {
             try {
                 const response = await fetch('http://localhost/lingonowAPI/slang/total');
@@ -71,7 +72,7 @@ export default {
                     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
                     datasets: [{
                         label: 'Slangs Added',
-                        data: [12, 19, 3, 5, 2, 3, 7],
+                        data: [12, 19, 3, 5, 2, 3, 7], //NEED TO ADD BACKEND 
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         borderColor: 'rgba(54, 162, 235, 1)',
                         borderWidth: 1
@@ -92,16 +93,12 @@ export default {
             renderChart();
         });
 
-        return {
-            totalSlangs
-        };
     }
 }
 </script>
 
 <style scoped>
 .rectangle-container {
-    border: 2px solid black;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;

@@ -34,9 +34,6 @@ export default {
         case '/Admin/Manage/:id/Update':
           return 'adminManage';
 
-        case '/Admin/Stats':
-          return 'adminStats';
-          
         default:
           return '';
       }
