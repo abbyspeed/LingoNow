@@ -12,7 +12,7 @@
         <div class="accountBox">
             <div class="textBox">
                 <h4>Username</h4>
-                <p>{{ profile.username || 'N/A' }}</p>
+                <p>{{ profile.username }}</p>
             </div>
             
             <div class="textBox">
@@ -46,13 +46,11 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
-// import { useStore } from 'vuex';
 
 export default {
     setup() {
         const route = useRoute();
         const router = useRouter();
-        // const store = useStore();
     
         const currentRoute = computed(() => {
             console.log('Current path:', route.path);
@@ -88,7 +86,7 @@ export default {
             fullName: '',
             email: '',
             phoneNo: '',
-            password: '', // Consider using a placeholder or asterisks for display purposes.
+            password: '', 
         });
 
         const fetchProfile = async () => {
