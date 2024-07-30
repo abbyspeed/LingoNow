@@ -58,6 +58,10 @@ export default {
   color: white;
   background-color: #FF9B3F;
   font-family: 'Inter', sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .navbar a {

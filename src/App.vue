@@ -27,6 +27,7 @@ export default {
 }
 
 html {
+  overflow-x: hidden;
   overflow-y: scroll; /* Always show the vertical scrollbar */
 }
 </style>

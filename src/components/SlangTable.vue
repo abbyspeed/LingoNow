@@ -101,12 +101,12 @@ export default {
             isDialogVisible.value = true;
         };
 
-        const confirmDelete = async (slangId) => {
+        const confirmDelete = async () => {
             if (slangToDelete.value) {
                 try {
                     await axios.delete(`http://localhost/lingonowAPI/index.php/slangs/${slangToDelete.value}/delete`);
                     slang.value = slang.value.filter(item => item.slangId !== slangToDelete.value);
-                    console.log('Slang deleted successfully:', response.data);
+                    // console.log('Slang deleted successfully:', response.data);
                 } catch (error) {
                     console.error('Error deleting slang:', error);
                 } finally {
