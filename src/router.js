@@ -13,6 +13,7 @@ import AdminUpdatePage from './pages/AdminUpdatePage.vue'
 import AdminStatsPage from './pages/AdminStatsPage.vue'
 import AdminManagePage from './pages/AdminManagePage.vue'
 import AdminProfilePage from './pages/AdminProfilePage.vue'
+import AdminProfileUpdatePage from './pages/AdminProfileUpdatePage.vue'
 
 const routes = [
   { path: '/', name: "Home", component: HomePage },
@@ -25,12 +26,13 @@ const routes = [
   // Admin routes
   // { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage, meta: { requiresAuth: true } },
   // { path: '/Admin/About', name: "AdminAbout", component: AdminAboutPage, meta: { requiresAuth: true } },
-  // { path: '/Admin/Manage', name: "AdminManage", component: AdminHomePage, meta: { requiresAuth: true } },
-  // { path: '/Admin/Create', name:"AdminCreate", component: AdminCreatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage', name: "AdminManage", component: AdminManagePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Stats', name: "AdminStats", component: AdminStatsPage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Profile', name: "AdminProfile", component: AdminProfilePage, meta: { requiresAuth: true } },
 
-  // { path: '/Admin/Manage/:id', name: "ManageSlang", component: AdminHomePage, meta: { requiresAuth: true } },
-  // { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminHomePage, meta: { requiresAuth: true } },
-  // { path: '/Admin/Manage/:id/Delete', name: "DeleteSlang", component: AdminHomePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage, meta: { requiresAuth: true } },
+  // { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage, meta: { requiresAuth: true } },
 
   // Testing
   { path: '/Admin/Home', name: "AdminHome", component: AdminHomePage},
@@ -41,6 +43,7 @@ const routes = [
 
   { path: '/Admin/Manage/Create', name:"AdminCreate", component: AdminCreatePage},
   { path: '/Admin/Manage/:id/Update', name: "UpdateSlang", component: AdminUpdatePage},
+  { path: '/Admin/Profile/:id/Update', name: "UpdateProfile", component: AdminProfileUpdatePage},
 ]
 
 const router = createRouter({
@@ -50,17 +53,15 @@ const router = createRouter({
 
 // Route guards
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)){
-    if(!store.state.user){
-      next('/Login');
+  const isAuthenticated = store.state.user;
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-    } else{
-      next();
-    }
-    
-  } else{
+  if (requiresAuth && !isAuthenticated) {
+    next('/Login'); 
+
+  } else {
     next();
   }
-})
+});
 
 export default router;

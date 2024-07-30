@@ -21,12 +21,16 @@ export default new Vuex.Store({
     actions: {
         async login({ commit }, credentials){
             try{
-                const response = await axios.get('http://localhost/lingonowAPI/index.php/login', credentials);
+                const response = await axios.post(`http://localhost/lingonowAPI/index.php/login`, credentials, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
                 console.log('Login response:', response.data);
                 const user = response.data.user;
                 const token = response.data.token;
 
-                if(user && token != null){
+                if(user && token){
                     commit('setUser', user);
                     localStorage.setItem('token', token);
 
@@ -40,13 +44,24 @@ export default new Vuex.Store({
             }  
         },
 
-        logout({ commit }){
-            try{
-                commit('clearUser');
+        async logout({ commit }) {
+            try {
+                await axios.post(`http://localhost/lingonowAPI/index.php/logout`, null, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                    }
+                });
+
+                commit('resetUser');
+
+                console.log(localStorage.getItem('token'));
+                console.log(this.$store.state.user);
+
                 localStorage.removeItem('token');
 
-            } catch(error){
-                console.error('Logout error ', error);
+            } catch (error) {
+                console.error('Logout error:', error);
                 throw error;
             }
         }
@@ -59,21 +74,3 @@ export default new Vuex.Store({
 //         return this.$store.state.user;
 //     }
 // },
-
-// methods: {
-//     login(){
-//         const userData = { id: 1, name: 'Nabihah' };
-//         this.$store.dispatch('login', userData);
-//     },
-
-//     logout(){
-//         this.$store.dispatch('logout');
-//     }
-// }
-
-// // To be added to Vue.js or main.js
-// const user = JSON.parse(localStorage.getItem('user'));
-// if(user){
-//     store.commit('setUser', user);
-// }
-

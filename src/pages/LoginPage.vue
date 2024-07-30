@@ -62,7 +62,7 @@ export default {
 
         async login() {
             if (this.hasLoggedError) {
-                return; // Prevent further action if error already logged
+                return;
             }
 
             this.hasLoggedError = true;
@@ -80,21 +80,19 @@ export default {
                 await this.$store.dispatch('login', credentials);
 
                 if (this.$store.state.user) {
-                    this.$router.push("/Admin/Home");
+                    await this.$router.push("/Admin/Home");
 
                 } else {
                     console.error("Login failed: User not set");
                     this.errorMessage = "Login failed. Please check your credentials.";
-                    // this.hasLoggedError = true;
                 }
 
             } catch (error) {
                 console.error("Login failed:", error);
                 this.errorMessage = "Login failed. Please try again.";
-                // this.hasLoggedError = true;
                 // window.location.reload();
             } finally {
-                this.hasLoggedError = false; // Reset flag after request completes
+                this.hasLoggedError = false;
             }
         },
     }

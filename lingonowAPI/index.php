@@ -22,23 +22,22 @@ $app->get('/', function(){
 
 // Auth
 // CHECK CREDENTIALS
-$app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) {
+$app->post('/login', function ($request, $response, $args) use ($db, $jwtSecret) {
     $conn = $db->connect();
 
-    // Retrieve JSON input
     $input = $request->getParsedBody();
+
+    if (!is_array($input)) {
+        return $response->withStatus(400)->withJson(['message' => 'Invalid input']);
+    }
 
     $username = $input['username'] ?? '';
     $password = $input['password'] ?? '';
 
-    // Query the database for the user
     $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username");
     $stmt->bindValue(':username', $username);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    echo $password;
-    echo $user['pwd'];
 
     if ($user && password_verify($password, $user['pwd'])) {
         // Password is correct, generate JWT token
@@ -49,7 +48,6 @@ $app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) 
 
         $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
 
-        // Prepare response data
         $data = [
             'token' => $jwt,
             'user' => ['username' => $username]
@@ -59,12 +57,70 @@ $app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) 
         return $response->withHeader('Content-Type', 'application/json');
 
     } else {
-        // Invalid username or password
         $data = ['message' => 'Invalid username or password'];
         $response->getBody()->write(json_encode($data));
         return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
     }
 });
+
+// Logout
+$app->post('/logout', function ($request, $response, $args) use ($db) {
+    session_start();
+    session_unset();
+    session_destroy();
+    
+    $conn = $db->connect();
+
+    $headers = $request->getHeader('Authorization');
+    $token = '';
+
+    if (!empty($headers)) {
+        $token = str_replace('Bearer ', '', $headers[0]);
+    }
+
+    if ($token) {
+        $stmt = $conn->prepare('INSERT INTO blacklisted_tokens (token) VALUES (:token)');
+        $stmt->execute([':token' => $token]);
+    }
+
+    $response->getBody()->write(json_encode(['message' => 'Logged out successfully']));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$checkAuth = require 'middleware.php';
+
+// Define your routes with middleware
+$app->group('/Admin', function ($group) {
+    $group->get('/Home', function ($request, $response, $args) {
+        // Handle Home route
+        $response->getBody()->write("Admin Home");
+        return $response;
+    });
+
+    $group->get('/About', function ($request, $response, $args) {
+        // Handle About route
+        $response->getBody()->write("Admin About");
+        return $response;
+    });
+
+    $group->get('/Manage', function ($request, $response, $args) {
+        // Handle Manage route
+        $response->getBody()->write("Admin Manage");
+        return $response;
+    });
+
+    $group->get('/Stats', function ($request, $response, $args) {
+        // Handle Stats route
+        $response->getBody()->write("Admin Stats");
+        return $response;
+    });
+
+    $group->get('/Profile', function ($request, $response, $args) {
+        // Handle Profile route
+        $response->getBody()->write("Admin Profile");
+        return $response;
+    });
+})->add($checkAuth);
 
 $app->get('/users', function($request, $response, $args){
     $name = $args['name'];
@@ -105,6 +161,23 @@ $app->post('/users', function($request, $response, $args) use ($db){
     }
     
 });
+
+// READ (To be updated)
+$app->get('/profile', function($request, $response, $args) use ($db){
+    try{
+        $conn = $db->connect();
+
+        $sql = 'SELECT * FROM user WHERE userId = 1';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $profile = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $response->withJson(["profile" => $profile]);
+    }catch(Exception $e){
+        return $response->withJson(["error" => "Error: " . $e->getMessage()]);
+    }
+});
+
 
 // Password
 // UPDATE
