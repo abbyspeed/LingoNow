@@ -12,6 +12,9 @@
         <li :class="{ 'active-link': activeRoute === 'home'}">
           <router-link to="/" active-class="active-link" exact>Home</router-link>
         </li>
+        <li :class="{ 'active-link': activeRoute === 'search'}">
+          <router-link to="/Search" active-class="active-link" exact>Search</router-link>
+        </li>
         <li :class="{ 'active-link': activeRoute === 'about'}">
           <router-link to="/About" active-class="active-link" exact>About Us</router-link>
         </li>
@@ -57,6 +60,10 @@ export default {
   color: white;
   background-color: #FF9B3F;
   font-family: 'Inter', sans-serif;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .logoSection {

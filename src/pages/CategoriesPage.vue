@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navBar :activeRoute="categories"></navBar>
+    <navBar></navBar>
     <div class="background">
       <categoriesHeader @category-selected="handleCategorySelected" />
       <categoriesList v-if="selectedCategory" :category="selectedCategory" />
@@ -49,6 +49,7 @@ body {
   width: 100%;
   background-color: FF9B3F;
   background-size: cover;
+  padding-top: 70px;
 }
 </style>
   

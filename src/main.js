@@ -19,6 +19,8 @@ import AboutUsPage from './pages/AboutUsPage.vue';
 import CreatePage from './pages/AdminCreatePage.vue';
 import CategoriesPage from './pages/CategoriesPage.vue';
 import AdminNavBar from './components/AdminNavBar.vue'
+import DeleteDialog from './components/DeleteDialog.vue'
+import ProfileDropdown from './components/ProfileDropdown.vue'
 
 const app = createApp(App);
 app.component("customForm", CustomForm);
@@ -37,6 +39,8 @@ app.component("slangTable", SlangTable);
 app.component("aboutUs", AboutUsPage);
 app.component("createPage", CreatePage);
 app.component("categoriesPage", CategoriesPage);
+app.component("deleteDialog", DeleteDialog);
+app.component("profileDropdown", ProfileDropdown);
 
 app.use(router);
 app.use(store);

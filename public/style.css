@@ -11,8 +11,14 @@
     padding: 0;
 }
 
+html {
+    overflow-y: scroll; /* Always show the vertical scrollbar */
+}
+
 body{
     font-family: Arial, Helvetica, sans-serif;
+    padding-bottom: 30px;
+    /* overflow: overlay; */
 }
 
 h2{

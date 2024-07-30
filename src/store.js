@@ -20,16 +20,35 @@ export default new Vuex.Store({
 
     actions: {
         async login({ commit }, credentials){
-            const response = await axios.post('/login', credentials);
-            const user = response.data.user;
-            const token = response.data.token;
+            try{
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/login', credentials);
+                console.log('Login response:', response.data);
+                const user = response.data.user;
+                const token = response.data.token;
 
-            commit('setUser', user);
-            localStorage.setItem('token', token);
+                if(user && token != null){
+                    commit('setUser', user);
+                    localStorage.setItem('token', token);
+
+                } else{
+                    throw new Error('User or token not received');
+                }    
+            
+            } catch (error){
+                console.error('Login error: ', error);
+                throw error;
+            }  
         },
 
         logout({ commit }){
-            commit('clearUser');
+            try{
+                commit('clearUser');
+                localStorage.removeItem('token');
+
+            } catch(error){
+                console.error('Logout error ', error);
+                throw error;
+            }
         }
     }
 });

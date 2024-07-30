@@ -6,24 +6,26 @@
         </div>
         <div class="loginForm">
             <h3>Log into LingoNow</h3>
-            <form @submit.prevent="validateUser()">
+            <form @submit.prevent="login">
                 <customForm v-for="form in form" 
                     :title="form.title" 
                     :placeholderText="form.placeholderText"
                     :isPassword="form.isPassword" 
                     :key="form.id"
                     v-model="form.inputData"></customForm>
+
+                <div v-if="errorMessage" class="errorMessage">{{ errorMessage }}</div>
             
                 <button type="submit" class="mainBtn">Login</button>
             </form>
-            <router-link :to="{ name: 'Signup' }">
-                <center>Don't have an account? Sign up now!</center>
-            </router-link>
+            <center>To register, please reach out to us at lingo@gmail.com</center>
         </div>
     </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
     data() {
         return {
@@ -40,7 +42,9 @@ export default {
                     isPassword: true,
                     inputData: ""
                 }
-            ]
+            ],
+            errorMessage: '',
+            hasLoggedError: false
         }
     },
     methods: {
@@ -52,7 +56,47 @@ export default {
             }
 
             // this.$router.push('/Create');
-        }
+        },
+
+        ...mapActions(["login"]),
+
+        async login() {
+            if (this.hasLoggedError) {
+                return; // Prevent further action if error already logged
+            }
+
+            this.hasLoggedError = true;
+            this.errorMessage = '';
+
+            try {
+                const credentials = {
+                    username: this.form[0].inputData,
+                    password: this.form[1].inputData,
+                };
+
+                console.log(credentials);
+
+                // await this.login(credentials);
+                await this.$store.dispatch('login', credentials);
+
+                if (this.$store.state.user) {
+                    this.$router.push("/Admin/Home");
+
+                } else {
+                    console.error("Login failed: User not set");
+                    this.errorMessage = "Login failed. Please check your credentials.";
+                    // this.hasLoggedError = true;
+                }
+
+            } catch (error) {
+                console.error("Login failed:", error);
+                this.errorMessage = "Login failed. Please try again.";
+                // this.hasLoggedError = true;
+                // window.location.reload();
+            } finally {
+                this.hasLoggedError = false; // Reset flag after request completes
+            }
+        },
     }
 }
 </script>
@@ -85,17 +129,27 @@ export default {
     flex: 1;
     height: 100%;
     text-align: left;
-    padding: 10px 20px;
+    padding: 15px 20px;
 }
 
 h3 {
     text-align: center;
-    margin: 30px 0;
+    margin: 20px;
 }
 
 a {
     color: black;
     font-size: 12px;
     text-align: center;
+}
+
+.errorMessage {
+    font-size: 12px;
+    color: red;
+}
+
+center {
+    font-size: 10px;
+    color: gray;
 }
 </style>

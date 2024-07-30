@@ -1,5 +1,5 @@
 <template>
-    <navBar></navBar>
+    <adminNavBar :activeRoute="currentRoute"></adminNavBar>
 
     <div class="form-container">
         <form @submit.prevent="submitForm">
@@ -32,9 +32,42 @@
 import { reactive, ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { computed } from 'vue';
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex';
 
 export default {
     setup() {
+        const route = useRoute();
+        const store = useStore();
+
+        const currentRoute = computed(() => {
+        console.log('Current path:', route.path);
+        switch (route.path) {
+            case '/Admin/Home':
+            return 'adminHome';
+
+            case '/Admin/About':
+            return 'adminAbout';
+            
+            case '/Admin/Manage':
+            return 'adminManage';
+
+            case '/Admin/Manage/Create':
+            return 'adminManage';
+
+            case '/Admin/Manage/${route.params.id}/Update':
+            return 'adminManage';
+
+            case '/Admin/Stats':
+            return 'adminStats';
+            
+            default:
+            return '';
+        }});
+
+        const username = computed(() => store.state.user?.username || 'User');
+
         const newSlang = reactive({
             word: '',
             meaning: '',
@@ -48,7 +81,7 @@ export default {
 
         const fetchCategories = async () => {
             try {
-                const response = await axios.get('http://localhost/lingonowAPI/index.php/Categories');
+                const response = await axios.get('http://localhost/lingonowAPI/index.php/categories');
                 if (response.data.categories) {
                     categories.value = response.data.categories;
                 } else {
@@ -60,25 +93,26 @@ export default {
             }
         };
 
- const submitForm = async () => {
-    try {
-        console.log('Submitting new slang:', newSlang);
-        const response = await axios.post('http://localhost/lingonowAPI/index.php/Create', newSlang);
-        console.log('New Slang added:', response.data);
-        router.push('/Manage'); 
-    } catch (error) {
-        if (error.response) {
-            console.error('Error response data:', error.response.data);
-            console.error('Error response status:', error.response.status);
-            console.error('Error response headers:', error.response.headers);
-        } else if (error.request) {
-            console.error('Error request:', error.request);
-        } else {
-            console.error('Error message:', error.message);
-        }
-        console.error('Error config:', error.config);
-    }
-};
+        const submitForm = async () => {
+            try {
+                console.log('Submitting new slang:', newSlang);
+                const response = await axios.post('http://localhost/lingonowAPI/index.php/slangs/create', newSlang);
+                console.log('New Slang added:', response.data);
+                router.push('/Admin/Manage'); 
+            } catch (error) {
+                if (error.response) {
+                    console.error('Error response data:', error.response.data);
+                    console.error('Error response status:', error.response.status);
+                    console.error('Error response headers:', error.response.headers);
+                } else if (error.request) {
+                    console.error('Error request:', error.request);
+                } else {
+                    console.error('Error message:', error.message);
+                }
+                console.error('Error config:', error.config);
+            }
+        };
+        
         onMounted(() => {
             fetchCategories();
         });
@@ -86,7 +120,9 @@ export default {
         return {
             newSlang,
             categories,
-            submitForm
+            submitForm,
+            currentRoute,
+            username,
         };
     }
 };

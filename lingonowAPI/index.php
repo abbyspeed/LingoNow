@@ -6,11 +6,64 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 require 'vendor/autoload.php';
 require_once './dbconnect.php';
 
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
 $app = new \Slim\App;
 $db = new db();
 
+// To be changed
+$jwtSecret = 'your_jwt_secret';
+
+// Sample
 $app->get('/', function(){
     echo("Hello from root folder");
+});
+
+// Auth
+// CHECK CREDENTIALS
+$app->get('/login', function ($request, $response, $args) use ($db, $jwtSecret) {
+    $conn = $db->connect();
+
+    // Retrieve JSON input
+    $input = $request->getParsedBody();
+
+    $username = $input['username'] ?? '';
+    $password = $input['password'] ?? '';
+
+    // Query the database for the user
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username = :username");
+    $stmt->bindValue(':username', $username);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    echo $password;
+    echo $user['pwd'];
+
+    if ($user && password_verify($password, $user['pwd'])) {
+        // Password is correct, generate JWT token
+        $payload = [
+            'username' => $username,
+            'exp' => time() + 3600 // Token expiration time (1 hour)
+        ];
+
+        $jwt = JWT::encode($payload, $jwtSecret, 'HS256');
+
+        // Prepare response data
+        $data = [
+            'token' => $jwt,
+            'user' => ['username' => $username]
+        ];
+
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json');
+
+    } else {
+        // Invalid username or password
+        $data = ['message' => 'Invalid username or password'];
+        $response->getBody()->write(json_encode($data));
+        return $response->withStatus(401)->withHeader('Content-Type', 'application/json');
+    }
 });
 
 $app->get('/users', function($request, $response, $args){
@@ -18,6 +71,7 @@ $app->get('/users', function($request, $response, $args){
     echo 'Hello' .$name;
 });
 
+// CREATE (ON HOLD)
 $app->post('/users', function($request, $response, $args) use ($db){
     $conn = $db->connect();
     $data = $request->getParsedBody();
@@ -52,6 +106,27 @@ $app->post('/users', function($request, $response, $args) use ($db){
     
 });
 
+// Password
+// UPDATE
+$app->post('/resetPwd', function($request, $response, $args) use ($db){
+    $conn = $db->connect();
+    $input = $request->getParsedBody();
+
+    $email = $input['email'] ?? '';
+    $plainPassword = $input['password'] ?? '';
+
+    // Hash the password
+    $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+
+    // Update the database with the hashed password
+    $stmt = $conn->prepare("UPDATE user SET pwd = :pwd WHERE email = :email");
+    $stmt->execute(['pwd' => $hashedPassword, 'email' => $email]);
+
+    echo 'Password updated successfully.';
+});
+
+// Categories
+// READ
 $app->get('/categories', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
@@ -87,6 +162,8 @@ $app->get('/categories', function($request, $response, $args) use ($db){
     }
 });
 
+// Slangs
+// READ
 $app->get('/slangs', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
@@ -102,7 +179,7 @@ $app->get('/slangs', function($request, $response, $args) use ($db){
     }
 });
 
-$app->get('/category', function($request, $response, $args) use ($db){
+$app->get('/slangs/category', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
 
@@ -117,7 +194,8 @@ $app->get('/category', function($request, $response, $args) use ($db){
     }
 });
 
-$app->post('/create', function($request, $response, $args) use ($db){
+// CREATE
+$app->post('/slangs/create', function($request, $response, $args) use ($db){
     try {
         $conn = $db->connect();
         $data = $request->getParsedBody();
@@ -134,6 +212,75 @@ $app->post('/create', function($request, $response, $args) use ($db){
         return $response->withJson(['success' => true]);
     } catch(Exception $e) {
         return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
+// UPDATE
+$app->get('/slangs/{id}', function($request, $response, $args) use ($db) {
+    $slangId = $args['id'];
+
+    try {
+        $conn = $db->connect();
+
+        $sqlSlang = 'SELECT * FROM slang WHERE slangId = :slangId';
+        $stmtSlang = $conn->prepare($sqlSlang);
+        $stmtSlang->bindParam(':slangId', $slangId, PDO::PARAM_INT);
+        $stmtSlang->execute();
+        $slang = $stmtSlang->fetch(PDO::FETCH_ASSOC);
+
+        if ($slang) {
+            return $response->withJson($slang);
+        } else {
+            return $response->withJson(["error" => "Slang not found"], 404);
+        }
+    } catch(Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()]);
+    }
+});
+
+$app->put('/slangs/{id}/update', function($request, $response, $args) use ($db){
+    $slangId = $args['id'];
+
+    try {
+        $conn = $db->connect();
+        $data = $request->getParsedBody();
+
+        $sql = 'UPDATE slang SET word=:word, meaning=:meaning, example=:example, lastUpdated=:lastUpdated, categoryId=:categoryId WHERE slangId=:slangId';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':word', $data['word']);
+        $stmt->bindParam(':meaning', $data['meaning']);
+        $stmt->bindParam(':example', $data['example']);
+        $stmt->bindParam(':lastUpdated', $data['lastUpdated']);
+        $stmt->bindParam(':categoryId', $data['categoryId']);
+        $stmt->bindParam(':slangId', $slangId, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        return $response->withJson(['success' => true]);
+    } catch(Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
+// DELETE
+$app->delete('/slangs/{id}/delete', function($request, $response, $args) use ($db) {
+    $slangId = $args['id'];
+
+    try {
+        $conn = $db->connect();
+ 
+        $sql = 'DELETE FROM slang WHERE slangId = :id';
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $slangId, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        if ($stmt->rowCount() > 0) {
+            return $response->withJson(['message' => 'Slang deleted successfully'], 200);
+        } else {
+            return $response->withJson(['message' => 'No slang found with that ID'], 404);
+        }
+    } catch (Exception $e) {
+        return $response->withJson(['error' => 'Error: ' . $e->getMessage()], 500);
     }
 });
 

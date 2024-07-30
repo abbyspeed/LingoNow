@@ -1,86 +1,176 @@
 <template>
-<navBar></navBar>
-        <div class="search-section">
-            <div class="search-content">
-                <h2 class="search-title">Search the SLANG</h2>
-                <div class="search-box">
-                    <input type="text" placeholder="Search" v-model="searchQuery" @input="filterSlang" />
+    <navBar></navBar>
+    <div class="search-section">
+        <div class="search-content">
+            <h2 class="search-title">Search the SLANG</h2>
+            <div class="search-box">
+                <input type="text" placeholder="Search" v-model="searchQuery" @input="filterSlang" />
+            </div>
+        </div>
+        <!-- <div class="logoSection">
+            <img :src="require('/src/assets/search.png')" alt="LingoNow" class="logo" height="100px" width="100px" />
+        </div> -->
+    </div>
+    
+    <div class="slanglist-section">
+         <div v-for="(slang, index) in filteredSlang" :key="slang.slangId">
+            <div class="result-row">
+                <div class="word-bar">{{ slang.word }}</div>
+                <div class="likes-dislikes">
+                    <span>{{ slang.likes }}</span>
+                    <button @click="like(slang.slangId, index)"><img src="@/assets/like-icon.png" alt="Like"></button>
+                    <span>{{ slang.dislikes }}</span>
+                    <button @click="dislike(slang.slangId, index)"><img src="@/assets/dislike-icon.png" alt="Dislike"></button>
                 </div>
             </div>
-            <!-- <div class="logoSection">
-                <img :src="require('/src/assets/search.png')" alt="LingoNow" class="logo" height="100px" width="100px" />
-            </div> -->
+            <div class="meaning">
+                Meaning:
+                <p>{{ slang.meaning }}</p>
+                <hr v-if="index < filteredSlang.length - 1" />
+            </div>
         </div>
-        
-        <div class="slanglist-section">
-            <ul class="slang-list">
-                <li v-for="slang in filteredSlang" :key="slang.word" class="slang-item">
-                    <h3 class="slang-word">{{ slang.word }}</h3>
-                    <strong>Meaning:</strong> {{ slang.meaning }}<br>
-                    <strong>Example:</strong> {{ slang.example }}
-                </li>
-            </ul>
-        </div>
+    </div>
 </template>
 
 <script>
 export default {
     data() {
         return {
-            slangList: [
-                {
-                    word: 'Lit',
-                    meaning: 'Amazing, exciting, cool',
-                    example: 'The party last night was lit!'
-                },
-                {
-                    word: 'Stan',
-                    meaning: 'An overzealous fan of a particular celebrity or thing',
-                    example: "I'm such a stan of Beyoncé; I know all her songs by heart and have seen all her concerts."
-                },
-                {
-                    word: 'Yeet',
-                    meaning: 'An exclamation of excitement, approval, or triumph',
-                    example: "I got an A on my test—yeet! I'm so happy and relieved!"
-                },
-                {
-                    word: 'Savage',
-                    meaning: 'Fierce, brutally honest, or badass',
-                    example: "Did you see how she roasted him? She's so savage! She doesn't hold back and speaks her mind."
-                },
-                {
-                    word: 'GOAT',
-                    meaning: 'Greatest of all time',
-                    example: "Michael Jordan is the GOAT of basketball. He is widely regarded as the greatest basketball player of all time."
-                }
-            ],
-            searchQuery: ''
+            slangList: [],  
+            searchQuery: '',
         };
     },
     computed: {
         filteredSlang() {
-            return this.slangList.filter(slang =>
-                slang.word.toLowerCase().includes(this.searchQuery.toLowerCase())
-            );
+            if (Array.isArray(this.slangList)) {
+                return this.slangList.filter(slang =>
+                    slang.word.toLowerCase().includes(this.searchQuery.toLowerCase())
+                );
+            }
+            return []; 
         }
     },
     methods: {
-        filterSlang() {
-            this.filteredSlang = this.slangList.filter(slang =>
-                slang.word.toLowerCase().includes(this.searchQuery.toLowerCase())
-            );
+async fetchSlangData() {
+        try {
+            const response = await fetch('http://localhost/lingonowAPI/index.php/slangs');
+            if (!response.ok) {
+                throw new Error(`Failed to fetch data: ${response.statusText}`);
+            }
+            const data = await response.json();
+            if (Array.isArray(data.slangs)) {
+                this.slangList = data.slangs;
+            } else {
+                console.error('Fetched data does not contain an array in "slangs":', data);
+                this.slangList = []; 
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
+    },
+        async like(slangId) {
+            try {
+                await fetch(`/api/slang/${slangId}/like`, { method: 'POST' });
+                const slang = this.slangList.find(s => s.slangId === slangId);
+                if (slang) slang.likes += 1;
+            } catch (error) {
+                console.error('Error liking:', error);
+            }
+        },
+        async dislike(slangId) {
+            try {
+                await fetch(`/api/slang/${slangId}/dislike`, { method: 'POST' });
+                const slang = this.slangList.find(s => s.slangId === slangId);
+                if (slang) slang.dislikes += 1;
+            } catch (error) {
+                console.error('Error disliking:', error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchSlangData();
     }
 };
 </script>
 
 <style scoped>
+.category {
+    background-color: white;
+    padding: 50px 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
 
+.result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.word-bar {
+    background-color: orange;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: black;
+}
+
+.likes-dislikes {
+    display: flex;
+    align-items: center;
+}
+
+.likes-dislikes span {
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.likes-dislikes button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.likes-dislikes button img {
+    width: 20px;
+    height: 20px;
+}
+
+.likes-dislikes button:hover img {
+    filter: invert(100%);
+}
+
+.meaning {
+    font-weight: bold;
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.meaning p {
+    margin-top: 0.5rem;
+    font-weight: normal;
+    text-align: left;
+}
+
+.paging {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.paging button {
+    margin: 0 5px;
+}
 
 .search-section {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     background-color: #FF9B3F;
+    justify-content: space-between;
     padding: 10px 20px; 
     padding-bottom: 30px;
 }
@@ -105,6 +195,7 @@ export default {
     border-radius: 25px; 
     background-color: white;
     padding: 5px 10px;
+    margin-top: 40px; 
 }
 
 .search-box input {
@@ -121,9 +212,12 @@ export default {
 }
 
 .slanglist-section {
-    background-color: white; 
-    padding: 20px; 
-    height: 33.33%; 
+    background-color: white;
+    padding: 50px 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start; 
 }
 
 .slang-list {
@@ -132,15 +226,43 @@ export default {
 }
 
 .slang-item {
-    background-color: #f5f5f5; 
-    border-radius: 10px; 
-    padding: 20px; 
-    margin-bottom: 20px; 
+    display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .slang-word {
     font-size: 24px; 
     margin-bottom: 10px; 
     font-style: italic; 
+}
+
+.likes-dislikes {
+    display: flex;
+    align-items: center;
+    margin-top: 10px; 
+}
+
+.likes-dislikes span {
+    margin-right: 0.5rem;
+    font-weight: bold;
+}
+
+.likes-dislikes button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+.likes-dislikes button img {
+    width: 20px;
+    height: 20px;
+}
+
+.likes-dislikes button:hover img {
+    filter: invert(100%);
 }
 </style>

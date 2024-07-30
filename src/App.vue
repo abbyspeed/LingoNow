@@ -4,7 +4,11 @@
 
 <script>
 export default {
-  name: 'LingoNow'
+  name: 'LingoNow',
+  // const user = JSON.parse(localStorage.getItem('user'));
+  // if(user){
+  //     store.commit('setUser', user);
+  // }
 }
 </script>
 
@@ -15,6 +19,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
 
+*{
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: scroll; /* Always show the vertical scrollbar */
 }
 </style>
