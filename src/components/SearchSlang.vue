@@ -25,7 +25,7 @@
 <style>
 .search {
   background-color: #FF9B3F;
-  padding: 50px 100px;
+  padding: 100px 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
