@@ -46,11 +46,15 @@
 import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default {
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const store = useStore();
+
+        const userId = computed(() => store.state.user?.userId);
     
         const currentRoute = computed(() => {
             console.log('Current path:', route.path);
@@ -77,8 +81,6 @@ export default {
                     return '';
             }
         });
-    
-        // const userSession = computed(() => store.state.user?.username || 'User');
 
         const profile = ref({
             userId: '',
@@ -91,8 +93,13 @@ export default {
 
         const fetchProfile = async () => {
             try {
-                const response = await axios.get('http://localhost/lingonowAPI/index.php/profile'); 
+                const response = await axios.get(`http://localhost/lingonowAPI/index.php/profile/${userId.value}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    },
+                }); 
                 console.log(response);
+                
                 if (response.data) {
                     profile.value = response.data.profile; 
                 } else {
@@ -105,8 +112,9 @@ export default {
 
         const goToEditProfile = () => {
             const userId = profile.value.userId;
-            console.log(`Edit profile with ID: ${userId}`);
-            router.push({ name: 'UpdateProfile', params: { id: userId } });
+
+            console.log(`Edit profile with ID: ${userId.value}`);
+            router.push({ name: 'UpdateProfile', params: { id: userId.value } });
         };
 
         onMounted(() => {
@@ -116,7 +124,6 @@ export default {
         return {
             currentRoute,
             goToEditProfile,
-            // username,
             profile
         };
     },

@@ -40,7 +40,6 @@ $app->post('/login', function ($request, $response, $args) use ($db, $jwtSecret)
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($user && password_verify($password, $user['pwd'])) {
-        // Password is correct, generate JWT token
         $payload = [
             'username' => $username,
             'exp' => time() + 3600 // Token expiration time (1 hour)
@@ -50,7 +49,10 @@ $app->post('/login', function ($request, $response, $args) use ($db, $jwtSecret)
 
         $data = [
             'token' => $jwt,
-            'user' => ['username' => $username]
+            'user' => [
+                'userId' => $user['userId'],
+                'username' => $username
+            ]
         ];
 
         $response->getBody()->write(json_encode($data));
@@ -112,12 +114,7 @@ $app->group('/Admin', function ($group) {
     });
 })->add($checkAuth);
 
-$app->get('/users', function($request, $response, $args){
-    $name = $args['name'];
-    echo 'Hello' .$name;
-});
-
-// CREATE (ON HOLD)
+// CREATE
 $app->post('/users', function($request, $response, $args) use ($db){
     $conn = $db->connect();
     $data = $request->getParsedBody();
@@ -128,16 +125,17 @@ $app->post('/users', function($request, $response, $args) use ($db){
             $email = $data['email'];
             $username = $data['username'];
             $phoneNo = $data['phoneNo'];
-            $password = $data['password'];
+            $plainPassword = $data['password'];
+
+            $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
     
             $sql = 'INSERT INTO user (email, username, pwd, fullName, phoneNo) VALUES (:email, :username, :pwd, :fullName, :phoneNo)';
             $stmt = $conn->prepare($sql);
             $stmt->bindValue(':email', $email);
             $stmt->bindValue(':username', $username);
-            $stmt->bindValue(':pwd', $password);
+            $stmt->bindValue(':pwd', $hashedPassword);
             $stmt->bindValue(':fullName', $fullName);
             $stmt->bindValue(':phoneNo', $phoneNo);
-    
             $stmt->execute();
     
             return $response->withJson(['message' => 'created successfully']);
@@ -146,19 +144,23 @@ $app->post('/users', function($request, $response, $args) use ($db){
             return $response->withJson(['message' => 'failed']);
             
         }
-    }catch(Exception $error){
-        return $response->withJson(['message' => 'something went wrong']);
+    } catch(Exception $error){
+        error_log('General error: ' . $error->getMessage());
+        return $response->withStatus(500)->withJson(['message' => $error->getMessage()]);
     }
     
 });
 
-// READ (To be updated)
-$app->get('/profile', function($request, $response, $args) use ($db){
+// READ
+$app->get('/profile/{userId}', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
 
-        $sql = 'SELECT * FROM user WHERE userId = 1';
+        $userId = $args['userId'];
+
+        $sql = 'SELECT * FROM user WHERE userId = :userId';
         $stmt = $conn->prepare($sql);
+        $stmt->bindValue(':userId', $userId);
         $stmt->execute();
         $profile = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -178,10 +180,8 @@ $app->post('/resetPwd', function($request, $response, $args) use ($db){
     $email = $input['email'] ?? '';
     $plainPassword = $input['password'] ?? '';
 
-    // Hash the password
     $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
 
-    // Update the database with the hashed password
     $stmt = $conn->prepare("UPDATE user SET pwd = :pwd WHERE email = :email");
     $stmt->execute(['pwd' => $hashedPassword, 'email' => $email]);
 
@@ -218,19 +218,16 @@ $app->get('/categories', function($request, $response, $args) use ($db){
     try{
         $conn = $db->connect();
 
-        // Fetch categories
         $sqlCategories = 'SELECT * FROM category';
         $stmtCategories = $conn->prepare($sqlCategories);
         $stmtCategories->execute();
         $categories = $stmtCategories->fetchAll(PDO::FETCH_ASSOC);
 
-        // Fetch slangs
         $sqlSlangs = 'SELECT * FROM slang';
         $stmtSlangs = $conn->prepare($sqlSlangs);
         $stmtSlangs->execute();
         $slangs = $stmtSlangs->fetchAll(PDO::FETCH_ASSOC);
 
-        // Group slangs by categoryId
         $result = [];
         foreach ($categories as $category) {
             $categoryId = $category['categoryId'];
@@ -368,61 +365,6 @@ $app->delete('/slangs/{id}/delete', function($request, $response, $args) use ($d
         }
     } catch (Exception $e) {
         return $response->withJson(['error' => 'Error: ' . $e->getMessage()], 500);
-    }
-});
-
-// TOTAL SLANG
-$app->get('/total', function($request, $response, $args) use ($db) {
-    try {
-        $conn = $db->connect();
-
-        $sqlCount = 'SELECT COUNT(*) AS total FROM slang';
-        $stmtCount = $conn->prepare($sqlCount);
-        $stmtCount->execute();
-        $result = $stmtCount->fetch(PDO::FETCH_ASSOC);
-
-        $total = $result['total'];
-
-        return $response->withJson(['total' => $total]);
-    } catch (Exception $e) {
-        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
-    }
-});
-
-// RETRIEVE LIKE & DISLIKE
-$app->get('/like-dislike', function($request, $response, $args) use ($db) {
-    try {
-        $conn = $db->connect();
-
-        $sql = 'SELECT SUM(likes) AS totalLikes, SUM(dislikes) AS totalDislikes FROM slang';
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        $totalLikes = $result['totalLikes'];
-        $totalDislikes = $result['totalDislikes'];
-
-        return $response->withJson(['totalLikes' => $totalLikes, 'totalDislikes' => $totalDislikes]);
-    } catch (Exception $e) {
-        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
-    }
-});
-
-// RETRIEVE CHART DATA
-$app->get('/chart', function($request, $response, $args) use ($db) {
-    try {
-        $conn = $db->connect();
-
-        $sqlCountByMonth = "SELECT DATE_FORMAT(lastUpdated, '%Y-%m') AS month, COUNT(*) AS count FROM slang GROUP BY month ORDER BY month";
-        
-        $stmtCountByMonth = $conn->prepare($sqlCountByMonth);
-        $stmtCountByMonth->execute();
-        $result = $stmtCountByMonth->fetchAll(PDO::FETCH_ASSOC);
-
-        // Return the result as JSON
-        return $response->withJson($result);
-    } catch (Exception $e) {
-        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
     }
 });
 

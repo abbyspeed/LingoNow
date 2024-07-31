@@ -48,16 +48,6 @@ export default {
         }
     },
     methods: {
-        validateUser(){
-            const userData = [];
-
-            for(let i=0; i<this.form.length; i++){
-                userData.push(this.form[i].inputData);
-            }
-
-            // this.$router.push('/Create');
-        },
-
         ...mapActions(["login"]),
 
         async login() {

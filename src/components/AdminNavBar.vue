@@ -23,7 +23,7 @@
       <profileDropdown :options="dropdownOptions">
         <template #trigger>
           <img :src="require('/src/assets/user.png')" alt="user" class="user" />
-          <p>User</p>
+          <p>{{ username }}</p>
         </template>
       </profileDropdown>
     </div>
@@ -31,7 +31,7 @@
 </template>
   
 <script>
-import { mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   props: {
@@ -49,6 +49,13 @@ export default {
         { label: 'Logout', path: '/', callback: this.handleLogout }  
       ]
     };
+  },
+
+  computed: {
+    ...mapState(['user']),
+    username() {
+      return this.user ? this.user.username : 'User';
+    }
   },
 
   methods: {

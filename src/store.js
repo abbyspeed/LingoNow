@@ -4,6 +4,7 @@ import axios from 'axios';
 export default new Vuex.Store({
     state: {
         user: null,
+        token: null
     },
 
     mutations: {
@@ -12,9 +13,16 @@ export default new Vuex.Store({
             localStorage.setItem('user', JSON.stringify(user));
         },
 
+        setToken(state, token){
+            state.token = token;
+            localStorage.setItem('token', token);
+        },
+
         resetUser(state){
             state.user = null;
+            state.token = null;
             localStorage.removeItem('user');
+            localStorage.removeItem('token');
         }
     },
 
@@ -32,7 +40,7 @@ export default new Vuex.Store({
 
                 if(user && token){
                     commit('setUser', user);
-                    localStorage.setItem('token', token);
+                    commit('setToken', token);
 
                 } else{
                     throw new Error('User or token not received');
@@ -58,8 +66,6 @@ export default new Vuex.Store({
                 console.log(localStorage.getItem('token'));
                 console.log(this.$store.state.user);
 
-                localStorage.removeItem('token');
-
             } catch (error) {
                 console.error('Logout error:', error);
                 throw error;
@@ -67,10 +73,3 @@ export default new Vuex.Store({
         }
     }
 });
-
-// // To be used in components
-// computed: {
-//     user(){
-//         return this.$store.state.user;
-//     }
-// },

@@ -12,9 +12,9 @@
             
                 <button type="submit" class="mainBtn">Sign Up</button>
             </form>
-            <router-link :to="{ name: 'Login' }">
+            <!-- <router-link :to="{ name: 'Login' }">
                 <center>Have an account? Log in now!</center>
-            </router-link>
+            </router-link> -->
         </div>
         <div class="logoSection">
             <img :src="require('/src/assets/logo.png')" alt="LingoNow" class="logo"/>
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 const id = 0;
 
 export default{
@@ -65,19 +66,55 @@ export default{
                     isPassword: true,
                     inputData: ""
                 }
-            ]
+            ],
+            isSubmitting: false
         }
     },
     methods: {
-        createUser(){
-            const newUserData = [];
+        async createUser() {
+            const [fullName, email, username, password, confirmPassword] = this.form.map(
+                (field) => field.inputData
+            );
 
-            for(let i=0; i<this.form.length; i++){
-                newUserData.push(this.form[i].inputData);
+            const newUserData = {
+                fullName: this.form[0].inputData,
+                email: this.form[1].inputData,
+                username: this.form[2].inputData,
+                phoneNo: this.form[3].inputData,
+                password: this.form[4].inputData,
+            };
+            console.log('User data:', newUserData);
+
+            if (!fullName || !email || !username || !password || !confirmPassword) {
+                alert('Please fill in all fields');
+                return;
             }
 
-            this.$router.push('/Login');
-        }
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            if (this.isSubmitting) return;
+            this.isSubmitting = true;
+
+            try {
+                axios.post('http://localhost/lingonowAPI/index.php/users', newUserData)
+                .then(response => {
+                    console.log('Response:', response.data);
+                    this.$router.push('/Login');
+                })
+                .catch(error => {
+                    console.error('Error:', error.response ? error.response.data : error.message);
+                });
+                
+            } catch (error) {
+                console.error('Error creating user:', error);
+                alert('An error occurred while creating the account.');
+            } finally {
+                this.isSubmitting = false;
+            }
+        },
     }
 }
 </script>
