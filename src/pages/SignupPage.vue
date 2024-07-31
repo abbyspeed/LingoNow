@@ -111,7 +111,7 @@ export default{
                 .then(response => {
                     console.log('Response:', response.data);
 
-                alert('Account is signed up successfully!');
+                    // alert('Account is signed up successfully!');
 
                     this.$router.push('/Login');
                 })
