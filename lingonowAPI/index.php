@@ -368,4 +368,58 @@ $app->delete('/slangs/{id}/delete', function($request, $response, $args) use ($d
     }
 });
 
+// TOTAL SLANG
+$app->get('/total', function($request, $response, $args) use ($db) {
+    try {
+        $conn = $db->connect();
+
+        $sql = "SELECT COUNT(*) as total FROM slang";
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $total = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $response->withJson($total);
+    } catch (Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()]);
+    }
+});
+
+// RETRIEVE LIKE & DISLIKE
+$app->get('/like-dislike', function($request, $response, $args) use ($db) {
+    try {
+        $conn = $db->connect();
+
+        $sql = 'SELECT SUM(likes) AS totalLikes, SUM(dislikes) AS totalDislikes FROM slang';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $totalLikes = $result['totalLikes'];
+        $totalDislikes = $result['totalDislikes'];
+
+        return $response->withJson(['totalLikes' => $totalLikes, 'totalDislikes' => $totalDislikes]);
+    } catch (Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
+// RETRIEVE CHART DATA
+$app->get('/chart', function($request, $response, $args) use ($db) {
+    try {
+        $conn = $db->connect();
+
+        $sqlCountByMonth = "SELECT DATE_FORMAT(lastUpdated, '%Y-%m') AS month, COUNT(*) AS count FROM slang GROUP BY month ORDER BY month";
+        
+        $stmtCountByMonth = $conn->prepare($sqlCountByMonth);
+        $stmtCountByMonth->execute();
+        $result = $stmtCountByMonth->fetchAll(PDO::FETCH_ASSOC);
+
+        // Return the result as JSON
+        return $response->withJson($result);
+    } catch (Exception $e) {
+        return $response->withJson(["error" => "Error: " . $e->getMessage()], 500);
+    }
+});
+
+
 $app->run();
