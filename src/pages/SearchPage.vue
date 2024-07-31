@@ -20,20 +20,20 @@
     </div>
     
     <div class="slanglist-section">
-         <div v-for="(slang, index) in filteredSlang" :key="slang.slangId">
+         <div v-for="(slang, index) in filteredSlang" :key="slang.slangId" class="result-wrapper">
             <div class="result-row">
                 <div class="word-bar">{{ slang.word }}</div>
                 <div class="likes-dislikes">
                     <span>{{ slang.likes }}</span>
                     <button @click="like(slang.slangId, index)"><img src="@/assets/like-icon.png" alt="Like"></button>
-                    <span>{{ slang.dislikes }}</span>
+                    <span class="dislike-gap">{{ slang.dislikes }}</span>
                     <button @click="dislike(slang.slangId, index)"><img src="@/assets/dislike-icon.png" alt="Dislike"></button>
                 </div>
             </div>
             <div class="meaning">
                 Meaning:
                 <p>{{ slang.meaning }}</p>
-                <hr v-if="index < filteredSlang.length - 1" />
+                <!-- <hr v-if="index < filteredSlang.length - 1" /> -->
             </div>
         </div>
     </div>
@@ -145,12 +145,19 @@ export default {
     align-items: flex-start;
 }
 
+.result-wrapper {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ddd;
+}
+
 .result-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .word-bar {
@@ -169,6 +176,10 @@ export default {
 .likes-dislikes span {
     margin-right: 0.5rem;
     font-weight: bold;
+}
+
+.likes-dislikes .dislike-gap {
+  margin-left: 1rem; 
 }
 
 .likes-dislikes button {

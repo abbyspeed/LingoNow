@@ -1,13 +1,13 @@
 <template>
   <div class="category">
     <h3>Category: {{ category.title }}</h3>
-    <div v-for="(result, index) in results" :key="index">
+    <div v-for="(result, index) in results" :key="index" class="result-wrapper">
       <div class="result-row">
         <div class="word-bar">{{ result.word }}</div>
         <div class="likes-dislikes">
           <span>{{ result.likes }}</span>
           <button @click="like(result.slangId, index)"><img src="@/assets/like-icon.png" alt="Like"></button>
-          <span>{{ result.dislikes }}</span>
+          <span class="dislike-gap">{{ result.dislikes }}</span>
           <button @click="dislike(result.slangId, index)"><img src="@/assets/dislike-icon.png" alt="Dislike"></button>
         </div>
       </div>
@@ -93,12 +93,19 @@ export default {
   align-items: flex-start;
 }
 
+.result-wrapper {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #ddd;
+}
+
 .result-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-bottom: 1rem;
+  box-sizing: border-box;
 }
 
 .word-bar {
@@ -117,6 +124,10 @@ export default {
 .likes-dislikes span {
   margin-right: 0.5rem;
   font-weight: bold;
+}
+
+.likes-dislikes .dislike-gap {
+  margin-left: 1rem; 
 }
 
 .likes-dislikes button {
