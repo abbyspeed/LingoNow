@@ -54,6 +54,13 @@ export default{
                 },
                 {
                     id: id,
+                    title: "Phone Number",
+                    placeholderText: "e.g 019-0981292",
+                    isPassword: false,
+                    inputData: ""
+                },
+                {
+                    id: id,
                     title: "Password",
                     placeholderText: "e.g *********",
                     isPassword: true,
@@ -72,7 +79,7 @@ export default{
     },
     methods: {
         async createUser() {
-            const [fullName, email, username, password, confirmPassword] = this.form.map(
+            const [fullName, email, username, phoneNo, password, confirmPassword] = this.form.map(
                 (field) => field.inputData
             );
 
@@ -82,10 +89,11 @@ export default{
                 username: this.form[2].inputData,
                 phoneNo: this.form[3].inputData,
                 password: this.form[4].inputData,
+                confirmPassword: this.form[5].inputData,
             };
             console.log('User data:', newUserData);
 
-            if (!fullName || !email || !username || !password || !confirmPassword) {
+            if (!fullName || !email || !username || !phoneNo || !password || !confirmPassword) {
                 alert('Please fill in all fields');
                 return;
             }
@@ -102,6 +110,9 @@ export default{
                 axios.post('http://localhost/lingonowAPI/index.php/users', newUserData)
                 .then(response => {
                     console.log('Response:', response.data);
+
+                alert('Account is signed up successfully!');
+
                     this.$router.push('/Login');
                 })
                 .catch(error => {
