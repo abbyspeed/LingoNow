@@ -65,6 +65,8 @@ export default {
       try {
         await this.logout();
         console.log("Logged out");
+
+        alert("You are logged out");
         
         this.$router.push('/'); 
 
