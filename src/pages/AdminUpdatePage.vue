@@ -140,6 +140,9 @@ export default {
         console.log('Updating selected slang:', slang);
         const response = await axios.put(`http://localhost/lingonowAPI/index.php/slangs/${id}/update`, slang);
         console.log('Slang updated:', response.data);
+
+        alert('Slang updated successfully!');
+
         router.push('/Admin/Manage'); 
 
       } catch (error) {

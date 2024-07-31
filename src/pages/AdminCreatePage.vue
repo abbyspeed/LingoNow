@@ -127,6 +127,9 @@ export default {
                 console.log('Submitting new slang:', newSlang);
                 const response = await axios.post('http://localhost/lingonowAPI/index.php/slangs/create', newSlang);
                 console.log('New Slang added:', response.data);
+
+                alert('Slang created successfully!');
+
                 router.push('/Admin/Manage'); 
             } catch (error) {
                 if (error.response) {

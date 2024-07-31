@@ -128,6 +128,11 @@ setup() {
             const response = await axios.put(`http://localhost/lingonowAPI/index.php/profile/${id}/update`, profile);
             console.log('Profile updated:', response.data);
 
+            // Will update the adminNavBar but logs user out
+            // store.commit('setUser', response.data.profile);
+
+            alert('Profile updated successfully!');
+
             router.push('/Admin/Profile'); 
 
         } catch (error) {
