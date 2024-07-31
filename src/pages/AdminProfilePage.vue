@@ -111,8 +111,6 @@ export default {
         };
 
         const goToEditProfile = () => {
-            const userId = profile.value.userId;
-
             console.log(`Edit profile with ID: ${userId.value}`);
             router.push({ name: 'UpdateProfile', params: { id: userId.value } });
         };

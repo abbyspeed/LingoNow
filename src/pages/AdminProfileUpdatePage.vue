@@ -52,7 +52,7 @@
 <script>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router'
-// import { useStore } from 'vuex';
+import { useStore } from 'vuex';
 import { reactive, onMounted } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
@@ -61,7 +61,9 @@ export default {
 setup() {
     const route = useRoute();
     const router = useRouter();
-    // const store = useStore();
+    const store = useStore();
+
+    const userId = computed(() => store.state.user?.userId);
 
     const currentRoute = computed(() => {
     console.log('Current path:', route.path);
@@ -89,8 +91,6 @@ setup() {
     }
     });
 
-    // const session = computed(() => store.state.user?.username || 'User');
-
     const profile = reactive({
         userId: '',
         username: '',
@@ -102,7 +102,11 @@ setup() {
 
     const fetchProfile = async () => {
         try {
-            const response = await axios.get('http://localhost/lingonowAPI/index.php/profile'); 
+            const response = await axios.get(`http://localhost/lingonowAPI/index.php/profile/${userId.value}`, {
+              headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`,
+              },
+            }); 
             console.log(response.data);
 
             if (response.data) {
